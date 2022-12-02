@@ -10,12 +10,12 @@
 
 class NFA {
 public:
-    State start_state;
-    vector<State>end_states;
-    NFA(State s,vector<State> v);
+    State* start_state;
+    vector<State*>end_states;
+    NFA(State* s,vector<State*> v);
     void closureNFA();
-    void concatenateNFA(NFA concatenatedNFA);
-    void ORNFA(NFA paralleledNFA);
+    void concatenateNFA(NFA* concatenatedNFA);
+    void ORNFA(NFA* paralleledNFA);
     void positive_closureNFA();
 };
 

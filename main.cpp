@@ -33,6 +33,6 @@ int main(){
     p.parseFile(R"(C:\Users\rana_\Downloads\Phase(1)\test.txt)");
     NFA_Generator g;
 //    g.GenerateNFA(p.RE_expressions[0],p.RE_definitions);
-    g.GenerateNFA("letter digit",p.RE_definitions);
+    g.GenerateNFA("mulop: \\* | /",p.RE_definitions);
 
 }

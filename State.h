@@ -11,12 +11,12 @@ class State {
 public:
     int id;
     bool accepted;
-    map<char,vector<State>> nextStates;
+    map<char,vector<State*>> nextStates;
     string tokenType;
     State(int id);
     State();
-    void addNextState(State next, vector<char>input);
-    vector<State> goToNextState(char input);
+    void addNextState(State* next, vector<char>input);
+    vector<State*> goToNextState(char input);
     bool check(string input);
 
 

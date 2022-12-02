@@ -9,10 +9,10 @@
 
 class NFA_Generator {
 public:
-    vector<NFA>NFAs;
+    vector<NFA*>NFAs;
     void GenerateNFA(string RE_expression,map<string,vector<char>>RE_definitions);
 
-    NFA postfix_eval(vector<string>postfix,map<string,vector<char>>RE_definitions);
+    NFA* postfix_eval(vector<string>postfix,map<string,vector<char>>RE_definitions);
 };
 
 
