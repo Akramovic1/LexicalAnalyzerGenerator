@@ -2,45 +2,118 @@
 #include <bits/stdc++.h>
 #include "helper.h"
 using namespace std;
+
+map<string,vector<char>>Parser::raw_RE_definitions=map<string ,vector<char>>{};
+map<string,string>Parser::RE_definitions=map<string,string>{};
+map<string,pair<int,NFA*>>Parser::tokens=map<string,pair<int,NFA*>>{};
+vector<pair<string,string>>Parser::RE_expressions=vector<pair<string,string>>{};
+//vector<string>Parser::keywords=vector<string>{};
+vector<string>Parser::punctuation=vector<string>{};
+vector<string>Parser::restrictedSymbols=vector<string>{};
 void Parser::parseFile(string filepath){
     ifstream inFile;
     inFile.open(filepath);
     string str;
-    while (std::getline(inFile, str)) {
-        str= remove_duplicate_spaces(str);
-        if (str.find(":") != std::string::npos) {
-            str=remove_spaces(str);
-            RE_expressions.push_back(str);
-        } else if (str[0] == '{') {
-            str = str.substr(1,str.length()-2);
-            str=remove_first_last_space(str);
-            int pos = 0;
-            while ((pos = str.find(' ')) != string::npos) {
-                keywords.push_back(str.substr(0, pos));
-                str.erase(0, pos + 1);
-            }
-            pos = str.find(' ') != string::npos?str.find(' '):str.size();
-            keywords.push_back(str.substr(0, pos));
-        } else if (str[0] == '[') {
-            str = str.substr(1,str.length()-2);
-            str=remove_first_last_space(str);
-            int pos = 0;
-            while ((pos = str.find(' ')) != string::npos) {
-                punctuation.push_back(str.substr(0, pos));
-                str.erase(0, pos + 1);
-            }
-            pos = str.find(' ') != string::npos?str.find(' '):str.size();
-            punctuation.push_back(str.substr(0, pos));
-        } else if (str.find("=") != std::string::npos) {
-            str=remove_spaces(str);
-            int index = str.find('=');
-            string temp =  str.substr(index+1, str.size());
-            RE_definitions.insert({str.substr(0,index), expandDashes(temp)});
+    int priority=0;
+    regex def(R"([\s]*[a-zA-z]*[\s]*=[\s|a-zA-z0-9|\-|\+|\*|\(|\)|\|]*)");
+    regex reg(R"([\s]*[a-zA-z]*[\s]*:[\s|a-zA-z0-9|\-|\+|\*|\(|\)|\||\=|\<|>|\!\.|\/]*)");
+    regex k(R"(\{[\s]*([a-z]*[\s]*)*\})");
+    regex p(R"(\[[\s]*([\W]*[\s]*)*\])");
+    int pri = 0;
+
+    while(getline(inFile, str)){
+        if(regex_match(str, def)){
+            // definition
+            parse_definition(str);
+        }else if(regex_match(str, reg)){
+            // expression
+            parse_expression(str,pri++);
+        }else if(regex_match(str, k)){
+            //keywords
+            keywords_parsing(str);
+        }else if(regex_match(str, p)){
+            //punctuation
+           // keywords_punctuation_parsing(str);
         }else{
-            cout<<"Invalid Input";
+            cout << str + ": Invalid Rule" << endl;
         }
-    }}
-regex Parser::generateRegex(string str){
-    std::regex re("["+str+"]");
-    return re;
-};
+    }
+    inFile.close();
+    }
+
+/*handle spaces and remember order assumption.*/
+
+void Parser::parse_definition(string re_df) {
+    int pos=re_df.find('=');
+    string LHS = remove_spaces(re_df.substr(0,pos));
+    string RHS=  re_df.substr(pos+1,re_df.size());
+    if(re_df.find('-')!=string::npos){
+        vector<char>alphabet=expandDashes(RHS);
+        raw_RE_definitions.insert({LHS,alphabet});
+    }
+    else{
+        vector<string>RHS_tokens= split_on_spacial_chars(RHS);
+        for(int i=0;i<RHS_tokens.size();i++){
+            string s=RHS_tokens.at(i);
+            if(raw_RE_definitions.count(s)==0&& !is_spacial_character(s)){
+                while(RE_definitions.count(s)!=0){
+                    s=RE_definitions.at(s);
+                    RHS_tokens.at(i)=s;
+                }
+                if(raw_RE_definitions.count(s)==0){
+                    RHS_tokens.at(i)= surround_parentheses(s);
+                }
+            }
+        }
+        string a = accumulate(RHS_tokens.begin(),RHS_tokens.end(),string(""));
+        RE_definitions.insert({LHS,a});
+    }
+}
+//static map<string,pair<int,NFA>>tokens;
+//static vector<pair<string,string>>RE_expressions;
+void Parser::parse_expression(string re_ex,int priority){
+    int pos=re_ex.find(':');
+    string LHS = remove_spaces(re_ex.substr(0,pos));
+    string RHS= re_ex.substr(pos+1,re_ex.size());
+    vector<string>RHS_tokens= split_on_spacial_chars(RHS);
+    for(int i=0;i<RHS_tokens.size();i++) {
+        string s = RHS_tokens.at(i);
+        if(s=="\\"){
+            restrictedSymbols.push_back(RHS_tokens.at(i+1));
+            RHS_tokens.erase(RHS_tokens.begin()+i);
+            i--;
+        }
+        else if(RE_definitions.count(s)!=0){
+            RHS_tokens.at(i)=RE_definitions.at(s);
+        }
+        else if(raw_RE_definitions.count(s)==0){
+            RHS_tokens.at(i)=surround_parentheses(s);
+        }
+    }
+    string a = accumulate(RHS_tokens.begin(),RHS_tokens.end(),string(""));
+    RE_expressions.emplace_back(LHS,a);
+    tokens.insert({LHS,make_pair(priority,new NFA)});
+}
+void Parser::keywords_parsing(string keyword) {
+    keyword = keyword.substr(1, keyword.length() - 2);
+    vector<string>keyword_tokens= split_on_spacial_chars(keyword);
+    for(int i=0;i<keyword_tokens.size();i++) {
+        string s = keyword_tokens.at(i);
+        if(s=="\\"){
+            restrictedSymbols.push_back(keyword_tokens.at(i+1));
+            keyword_tokens.erase(keyword_tokens.begin()+i);
+            i--;
+        }
+        else{
+        string keyword_expression=s+":"+s;
+        parse_expression(keyword_expression,-1);
+        }
+    }
+}
+void Parser::punctuation_parsing(string punctuation_list) {
+    punctuation_list = punctuation_list.substr(1, punctuation_list.length() - 2);
+    vector<string>punctuation_tokens= split_on_spacial_chars(punctuation_list);
+    for(string s:punctuation_tokens){
+        punctuation.push_back(s);
+    }
+}

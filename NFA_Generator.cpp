@@ -7,18 +7,15 @@
 #include "State.h"
 
 void NFA_Generator::GenerateNFA(string RE_expression,map<string,vector<char>>RE_definitions) {
-    State start;
-    vector<State>end_states={start};
-//    NFA total_NFA(start,end_states);
     string LHS=RE_expression.substr(0, RE_expression.find(':'));
     string RHS=RE_expression.substr(RE_expression.find(':')+1,RE_expression.size());
     vector<string>tokens=split_on_spacial_chars(RHS);
     vector<string>v=generate_infix(tokens);
     v= infixToPostfix(v);
-    NFA* result= postfix_eval(v,RE_definitions);
+    NFA* result= postfix_eval(v,RE_definitions, remove_spaces(LHS));
     this->NFAs.push_back(result);
 }
-NFA* NFA_Generator::postfix_eval(vector<string>postfix,map<string,vector<char>>RE_definitions){
+NFA* NFA_Generator::postfix_eval(vector<string>postfix,map<string,vector<char>>RE_definitions,string accepted_type){
     stack<NFA*>st;
      for(string s:postfix){
          if(!is_spacial_character(s)&&s!="`"){
@@ -62,5 +59,10 @@ NFA* NFA_Generator::postfix_eval(vector<string>postfix,map<string,vector<char>>R
              }
          }
      }
-    return st.top();
+     NFA* accepted_NFA=st.top();
+     State* accpeting_state=new State();
+     accpeting_state->accepted = true;
+     accpeting_state->tokenType= accepted_type;
+     accepted_NFA->combine_end_states(accpeting_state);
+     return accepted_NFA;
 }

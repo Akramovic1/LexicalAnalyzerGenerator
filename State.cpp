@@ -4,11 +4,9 @@
 
 #include "State.h"
 #include "helper.h"
-State::State(int id){
-    this->id = id;
-}
 State::State(){
     this->id=id_generator++;
+    this->accepted=false;
 }
 void State::addNextState(State* next, vector<char> input) {
     for(char i : input) {

@@ -24,7 +24,7 @@ static  string remove_first_last_space(string str){
 }
 static vector<string> split_on_spacial_chars(string str) {
     vector<string> result;
-    regex rgx(R"([+()*\|\-,:?\s]+)");
+    regex rgx(R"([+()*\|\-,:?\s\\]+)");
 //    sregex_token_iterator iter(str.begin(), str.end(), rgx, -1);
 //    sregex_token_iterator end;
 //    for (; iter != end; ++iter){
@@ -49,7 +49,7 @@ static vector<string> split_on_spacial_chars(string str) {
     return result;
 }
 static bool is_spacial_character(string c){
-    regex rgx(R"([+()*\|\-?\s]+)");
+    regex rgx(R"([+()*\|\-?\s\\]+)");
     return regex_match(c,rgx);
 }
 static vector<string> generate_infix(vector<string>RE_expression_tokens) {
@@ -64,6 +64,15 @@ static vector<string> generate_infix(vector<string>RE_expression_tokens) {
         }
     }
     return RE_expression_tokens;
+}
+static string surround_parentheses(string input){
+    if(is_spacial_character(input)) return input;
+    for(int i = 0; i < input.size(); i++) {
+        input.insert(i, "(");
+        input.insert(i + 2, ")");
+        i += 2;
+    }
+    return input;
 }
 
 //Function to return precedence of operators
@@ -89,17 +98,14 @@ static vector<string> infixToPostfix(vector<string>RE_expression_tokens)
 
     for (int i = 0; i < RE_expression_tokens.size(); i++) {
         string c = RE_expression_tokens.at(i);
-
         // If the scanned character is
         // an operand, add it to output string.
         if (!is_spacial_character(c) && c!="`")
             postfix.push_back(c);
-
             // If the scanned character is an
             // ‘(‘, push it to the stack.
         else if (c == "(")
             st.push("(");
-
             // If the scanned character is an ‘)’,
             // pop and to output string from the stack
             // until an ‘(‘ is encountered.

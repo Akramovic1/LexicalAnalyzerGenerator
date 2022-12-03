@@ -5,18 +5,25 @@
 using namespace std;
 #ifndef PHASE_1__PARSER_H
 #define PHASE_1__PARSER_H
-
+#include "NFA.h"
 
 class Parser {
 public:
-    map<string,vector<char>>RE_definitions;
-    vector<string>RE_expressions;
-    vector<string>keywords;
-    vector<string>punctuation;
-    vector<string>restrictedSymbols;
+    static map<string,vector<char>>raw_RE_definitions;
+    static map<string,string>RE_definitions;
+    static map<string,pair<int,NFA*>>tokens;
+    static vector<pair<string,string>>RE_expressions;
+    static vector<string>keywords;
+    static vector<string>punctuation;
+    static vector<string>restrictedSymbols;
 
     void parseFile(string filepath);
+    void parse_definition(string re_df);
+    void parse_expression(string re_ex,int priority);
+    void keywords_parsing(string keyword_punctuation);
+    void punctuation_parsing(string punctuation);
     regex generateRegex(string str);
+
 };
 
 

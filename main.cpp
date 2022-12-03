@@ -12,7 +12,7 @@ int main(){
 //    s.checker=p.RE_definitions.at("digit");
 //    cout<<s.check("6")<<endl;
 //    std::string s = "who,li\\ves:in-a,pineapple    under-the+sea?";
-    std::string s = "a-z 1-9";
+//    std::string s = "letter | digit  +";
 //    vector<string>r=split_on_spacial_chars(s);
 //    for(string s:r){
 //        cout<<s<<" ";
@@ -30,9 +30,10 @@ int main(){
 //    }
 //    cout<<endl;
     Parser p;
-    p.parseFile(R"(C:\Users\rana_\Downloads\Phase(1)\test.txt)");
+    p.parseFile(R"(C:\Users\mrrad\OneDrive\Documents\GitHub\LexicalAnalyzerGenerator\test.txt)");
     NFA_Generator g;
 //    g.GenerateNFA(p.RE_expressions[0],p.RE_definitions);
-    g.GenerateNFA("mulop: \\* | /",p.RE_definitions);
+//    g.GenerateNFA("mulop: \\* | /",p.RE_definitions);
+//    cout<<surround_parentheses("Rana")<<endl;
 
 }

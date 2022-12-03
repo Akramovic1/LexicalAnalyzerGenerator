@@ -59,3 +59,15 @@ void NFA::ORNFA(NFA* paralleledNFA){
     this->end_states=newVector;
     this->start_state=start;
 }
+void NFA::combine_end_states(State* combined_end_state){
+    for(State* s:this->end_states){
+        s->addNextState(combined_end_state, vector<char>{' '});
+    }
+    this->end_states.clear();
+    this->end_states.push_back(combined_end_state);
+}
+
+NFA::NFA() {
+
+}
+

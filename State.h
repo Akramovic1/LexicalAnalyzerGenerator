@@ -13,7 +13,6 @@ public:
     bool accepted;
     map<char,vector<State*>> nextStates;
     string tokenType;
-    State(int id);
     State();
     void addNextState(State* next, vector<char>input);
     vector<State*> goToNextState(char input);
