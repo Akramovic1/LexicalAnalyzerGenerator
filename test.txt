@@ -1,12 +1,5 @@
-addop: \+ | -
-letter = a - b | A-B
-digit = 0 - 1
-digits = digit+
-id: letter (letter|digit)*
-{boolean int float}
-num: digit+ | digit+ . digits ( \L | E digits)
-relop: \=\= | !\= | > | >\= | < | <\=
-assign: =
-{ if else while }
-[; , \( \) { }]
-mulop: \* | /
+int sum , count , pass , mnt; while (pass !=
+10)
+{
+pass = pass + 1 ;
+}

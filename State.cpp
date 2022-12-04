@@ -18,9 +18,3 @@ void State::addNextState(State* next, vector<char> input) {
         }
     }
 }
-vector<State*> State::goToNextState(char input){
-    if(this->nextStates.count(input)!=0){
-        return this->nextStates.at(input);
-    }
-    return vector<State*>{};
-}

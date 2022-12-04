@@ -15,7 +15,6 @@ public:
     string tokenType;
     State();
     void addNextState(State* next, vector<char>input);
-    vector<State*> goToNextState(char input);
     bool check(string input);
 
 

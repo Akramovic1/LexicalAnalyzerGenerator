@@ -76,7 +76,7 @@ NFA* NFA_Generator::postfix_eval(vector<string>postfix,map<string,vector<char>>R
 }
 void NFA_Generator::combine_NFAs(){
     for(NFA* nfa:NFAs){
-        total_NFA->start_state->addNextState(nfa->start_state,vector<char>{' '});
+        total_NFA->start_state->addNextState(nfa->start_state,vector<char>{'\0'});
         total_NFA->transitions.insert(nfa->transitions.begin(), nfa->transitions.end());
         total_NFA->end_states.push_back(nfa->end_states[0]);
     }

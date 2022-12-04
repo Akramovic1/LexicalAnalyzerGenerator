@@ -18,7 +18,6 @@ void Parser::parseFile(string filepath){
     regex k(R"(\{[\s]*([a-z]*[\s]*)*\})");
     regex p(R"(\[[\s]*([\W]*[\s]*)*\])");
     int pri = 0;
-
     while(getline(inFile, str)){
         if(regex_match(str, def)){
             // definition
