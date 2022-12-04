@@ -13,9 +13,7 @@ public:
     static map<string,string>RE_definitions;
     static map<string,pair<int,NFA*>>tokens;
     static vector<pair<string,string>>RE_expressions;
-    static vector<string>keywords;
     static vector<string>punctuation;
-    static vector<string>restrictedSymbols;
 
     void parseFile(string filepath);
     void parse_definition(string re_df);

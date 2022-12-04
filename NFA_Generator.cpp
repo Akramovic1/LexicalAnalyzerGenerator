@@ -6,13 +6,13 @@
 #include "helper.h"
 #include "State.h"
 
-void NFA_Generator::GenerateNFA(string RE_expression,map<string,vector<char>>RE_definitions) {
-    string LHS=RE_expression.substr(0, RE_expression.find(':'));
-    string RHS=RE_expression.substr(RE_expression.find(':')+1,RE_expression.size());
+void NFA_Generator::GenerateNFA(pair<string,string> RE_expression_pair,map<string,vector<char>>raw_RE_definitions) {
+    string LHS=RE_expression_pair.first;
+    string RHS=RE_expression_pair.second;
     vector<string>tokens=split_on_spacial_chars(RHS);
     vector<string>v=generate_infix(tokens);
     v= infixToPostfix(v);
-    NFA* result= postfix_eval(v,RE_definitions, remove_spaces(LHS));
+    NFA* result= postfix_eval(v,raw_RE_definitions, LHS);
     this->NFAs.push_back(result);
 }
 NFA* NFA_Generator::postfix_eval(vector<string>postfix,map<string,vector<char>>RE_definitions,string accepted_type){

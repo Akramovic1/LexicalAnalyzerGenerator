@@ -54,7 +54,10 @@ static bool is_spacial_character(string c){
 }
 static vector<string> generate_infix(vector<string>RE_expression_tokens) {
     for (int i = 1; i < RE_expression_tokens.size(); i++) {
-        if (RE_expression_tokens.at(i) == "(") {
+        if(RE_expression_tokens.at(i)=="\\"){
+            i++;
+        }
+        else if (RE_expression_tokens.at(i) == "(" && RE_expression_tokens.at(i-1)!="|") {
             RE_expression_tokens.insert(RE_expression_tokens.begin() + i, string(1,'`'));
             i+=1;
         } else if (!is_spacial_character(RE_expression_tokens.at(i)) &&
@@ -98,9 +101,14 @@ static vector<string> infixToPostfix(vector<string>RE_expression_tokens)
 
     for (int i = 0; i < RE_expression_tokens.size(); i++) {
         string c = RE_expression_tokens.at(i);
+        if(c=="\\"){
+            postfix.push_back(c);
+            i++;
+            postfix.push_back(RE_expression_tokens.at(i));
+        }
         // If the scanned character is
         // an operand, add it to output string.
-        if (!is_spacial_character(c) && c!="`")
+       else if (!is_spacial_character(c) && c!="`")
             postfix.push_back(c);
             // If the scanned character is an
             // ‘(‘, push it to the stack.
