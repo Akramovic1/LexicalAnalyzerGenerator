@@ -18,8 +18,7 @@ public:
     void parseFile(string filepath);
     void parse_definition(string re_df);
     void parse_expression(string re_ex,int priority);
-    void keywords_parsing(string keyword_punctuation);
-    void punctuation_parsing(string punctuation);
+    void keywords_punctuation_parsing(string keyword_punctuation);
     regex generateRegex(string str);
 
 };

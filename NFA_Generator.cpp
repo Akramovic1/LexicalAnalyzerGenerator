@@ -17,22 +17,19 @@ void NFA_Generator::GenerateNFA(pair<string,string> RE_expression_pair,map<strin
 }
 NFA* NFA_Generator::postfix_eval(vector<string>postfix,map<string,vector<char>>RE_definitions,string accepted_type){
     stack<NFA*>st;
-     for(string s:postfix){
-         if(!is_spacial_character(s)&&s!="`"){
-            if(RE_definitions.find(s) != RE_definitions.end()){
-                State* state = new State();
-                State* end_state = new State();
-                state->addNextState(end_state,RE_definitions.at(s));
-                NFA* currentNFA=new NFA(state,vector<State*>{end_state});
-                st.push(currentNFA);
-            }
-            else{
-                State* state = new State();
-                State* end_state = new State();
-                state->addNextState(end_state,vector<char>{s[0]});
-                NFA* currentNFA=new NFA(state,vector<State*>{end_state});
-                st.push(currentNFA);
-            }
+     for(int i=0;i<postfix.size();i++){
+         string s=postfix.at(i);
+         if((!is_spacial_character(s)&&s!="`" )||(s=="\\")){
+            State* state = new State();
+            State* end_state = new State();
+            if(s=="\\") s=postfix.at(i++);
+             if(RE_definitions.find(s) != RE_definitions.end()) {
+                 state->addNextState(end_state, RE_definitions.at(s));
+             }else{
+                 state->addNextState(end_state,vector<char>{s[0]});
+             }
+            NFA* currentNFA=new NFA(state,vector<State*>{end_state});
+            st.push(currentNFA);
          }
          else{
              if(s=="*"){

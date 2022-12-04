@@ -28,12 +28,12 @@ void Parser::parseFile(string filepath){
             parse_expression(str,pri++);
         }else if(regex_match(str, k)){
             //keywords
-            keywords_parsing(str);
+            keywords_punctuation_parsing(str);
         }else if(regex_match(str, p)){
             //punctuation
-            punctuation_parsing(str);
+            keywords_punctuation_parsing(str);
         }else{
-            cout << str + ": Invalid Rule" << endl;
+            cout << "Parser says: "+ str + ": Invalid Rule (or empty line)" << endl;
         }
     }
     inFile.close();
@@ -93,14 +93,15 @@ void Parser::parse_expression(string re_ex,int priority){
     RE_expressions.emplace_back(LHS,a);
     tokens.insert({LHS,make_pair(priority,new NFA)});
 }
-void Parser::keywords_parsing(string keyword) {
+void Parser::keywords_punctuation_parsing(string keyword) {
     keyword = keyword.substr(1, keyword.length() - 2);
     vector<string>keyword_tokens= split_on_spacial_chars(keyword);
     for(int i=0;i<keyword_tokens.size();i++) {
         string s = keyword_tokens.at(i);
         if(s=="\\"){
-            keyword_tokens.erase(keyword_tokens.begin()+i);
-            i--;
+            string keyword_expression=keyword_tokens.at(i+1)+":"+s+keyword_tokens.at(i+1);
+            parse_expression(keyword_expression,-1);
+            i++;
         }
         else{
         string keyword_expression=s+":"+s;
@@ -108,10 +109,4 @@ void Parser::keywords_parsing(string keyword) {
         }
     }
 }
-void Parser::punctuation_parsing(string punctuation_list) {
-    punctuation_list = punctuation_list.substr(1, punctuation_list.length() - 2);
-    vector<string>punctuation_tokens= split_on_spacial_chars(punctuation_list);
-    for(string s:punctuation_tokens){
-        punctuation.push_back(s);
-    }
-}
+
