@@ -30,9 +30,9 @@ int main(){
 //    }
 //    cout<<endl;
     Parser p;
-    p.parseFile(R"(C:\Users\rana_\Documents\GitHub\LexicalAnalyzerGenerator\test.txt)");
+    p.parseFile(R"(C:\Users\mrrad\OneDrive\Documents\GitHub\LexicalAnalyzerGenerator\test.txt)");
     NFA_Generator g;
-    g.GenerateNFA(Parser::RE_expressions[0],p.raw_RE_definitions);
+    g.generate_all_NFAs(Parser::RE_expressions,p.raw_RE_definitions);
 //    g.GenerateNFA("mulop: \\* | /",p.RE_definitions);
 //    cout<<surround_parentheses("Rana")<<endl;
 

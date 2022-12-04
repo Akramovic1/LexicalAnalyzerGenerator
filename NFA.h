@@ -12,6 +12,7 @@ class NFA {
 public:
     State* start_state;
     vector<State*>end_states;
+    map<int,State*>transitions;
     NFA(State* s,vector<State*> v);
     NFA();
     void closureNFA();

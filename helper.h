@@ -49,7 +49,7 @@ static vector<string> split_on_spacial_chars(string str) {
     return result;
 }
 static bool is_spacial_character(string c){
-    regex rgx(R"([+()*\|\-?\s\\]+)");
+    regex rgx(R"([+()*\|\?\s\\]+)");
     return regex_match(c,rgx);
 }
 static vector<string> generate_infix(vector<string>RE_expression_tokens) {
@@ -57,7 +57,7 @@ static vector<string> generate_infix(vector<string>RE_expression_tokens) {
         if(RE_expression_tokens.at(i)=="\\"){
             i++;
         }
-        else if (RE_expression_tokens.at(i) == "(" && RE_expression_tokens.at(i-1)!="|") {
+        else if (RE_expression_tokens.at(i) == "(" && RE_expression_tokens.at(i-1)!="|" && RE_expression_tokens.at(i-1)!="(") {
             RE_expression_tokens.insert(RE_expression_tokens.begin() + i, string(1,'`'));
             i+=1;
         } else if (!is_spacial_character(RE_expression_tokens.at(i)) &&
