@@ -1,7 +1,3 @@
-//
-// Created by mrrad on 11/28/2022.
-//
-
 #ifndef PHASE_1__STATE_H
 #define PHASE_1__STATE_H
 #include <bits/stdc++.h>

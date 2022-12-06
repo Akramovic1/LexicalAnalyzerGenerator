@@ -1,7 +1,3 @@
-//
-// Created by rana_ on 12/4/2022.
-//
-
 #include "Identifier.h"
 #include "NFA.h"
 #include "NFA_Generator.h"
@@ -22,12 +18,13 @@ int Identifier::parsing_single_token(string input) {
     int accepted_index = -1;
     string accepted_token = "";
     string acceptedString = "";
+    string accu = "";
     NFA *totalNFA = NFA_Generator::total_NFA;
     vector<State *> current_states = epsilonClosure(totalNFA->start_state);
     for (int i = 0; i < input.size(); i++) {
+        accu+=input[i];
         if (current_states.size() == 0)break;
         vector<State *> comming_states = nextAndEpsilonClosures(current_states, input[i]);
-        //State* accepted=new State();
         int accepted_priority = INT16_MAX;
         for (State *s: comming_states) {
             if (s->accepted) {
@@ -35,7 +32,7 @@ int Identifier::parsing_single_token(string input) {
                     accepted_priority = Parser::tokens.at(s->tokenType).first;
                     accepted_index = i;
                     accepted_token = s->tokenType;
-                    acceptedString += input[i];
+                    acceptedString = accu;
                 }
             }
         }

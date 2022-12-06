@@ -1,7 +1,3 @@
-//
-// Created by rana_ on 12/4/2022.
-//
-
 #ifndef PHASE_1__IDENTIFIER_H
 #define PHASE_1__IDENTIFIER_H
 #include <bits/stdc++.h>
@@ -15,6 +11,4 @@ public:
     vector<State*> nextAndEpsilonClosures(vector<State*>next_states,char input);
     void parse_string(string input_line);
 };
-
-
 #endif //PHASE_1__IDENTIFIER_H

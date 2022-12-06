@@ -1,6 +1,3 @@
-//
-// Created by mrrad on 11/28/2022.
-//
 #include <bits/stdc++.h>
 using namespace std;
 #ifndef PHASE_1__PARSER_H

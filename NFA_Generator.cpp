@@ -1,6 +1,3 @@
-//
-// Created by rana_ on 11/30/2022.
-//
 
 #include "NFA_Generator.h"
 #include "helper.h"
@@ -22,7 +19,6 @@ NFA* NFA_Generator::generate_NFA(pair<string,string> RE_expression_pair,map<stri
     v= infixToPostfix(v);
     NFA* result= postfix_eval(v,raw_RE_definitions, LHS);
     return result;
-
 }
 NFA* NFA_Generator::postfix_eval(vector<string>postfix,map<string,vector<char>>RE_definitions,string accepted_type){
     stack<NFA*>st;

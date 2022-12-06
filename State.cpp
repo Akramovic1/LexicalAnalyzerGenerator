@@ -1,7 +1,3 @@
-//
-// Created by mrrad on 11/28/2022.
-//
-
 #include "State.h"
 #include "helper.h"
 State::State(){

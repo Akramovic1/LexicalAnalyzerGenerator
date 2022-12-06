@@ -1,9 +1,4 @@
-//
-// Created by mrrad on 11/29/2022.
-//
-
 #include "NFA.h"
-
 NFA::NFA(State* s, vector<State*> v) {
     this->start_state = s;
     this->end_states = v;
@@ -78,7 +73,6 @@ void NFA::combine_end_states(State* combined_end_state){
     this->end_states.clear();
     this->end_states.push_back(combined_end_state);
 }
-
 NFA::NFA() {
 }
 

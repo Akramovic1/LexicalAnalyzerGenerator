@@ -13,23 +13,18 @@ void Parser::parseFile(string filepath){
     inFile.open(filepath);
     string str;
     int priority=0;
-    regex def(R"([\s]*[a-zA-z]*[\s]*=[\s|a-zA-z0-9|\-|\+|\*|\(|\)|\|]*)");
-    regex reg(R"([\s]*[a-zA-z]*[\s]*:[\s|a-zA-z0-9|\-|\+|\*|\(|\)|\||\=|\<|>|\!\.|\/]*)");
-    regex k(R"(\{[\s]*([a-z]*[\s]*)*\})");
-    regex p(R"(\[[\s]*([\W]*[\s]*)*\])");
-    int pri = 0;
+    regex definition_matcher(R"([\s]*[a-zA-z]*[\s]*=[\s|a-zA-z0-9|\-|\+|\*|\(|\)|\|]*)");
+    regex expression_matcher(R"([\s]*[a-zA-z]*[\s]*:[\s|a-zA-z0-9|\-|\+|\*|\(|\)|\||\=|\<|>|\!\.|\/]*)");
+    regex keywords_matcher(R"(\{[\s]*([a-z]*[\s]*)*\})");
+    regex punctuation_matcher(R"(\[[\s]*([\W]*[\s]*)*\])");
     while(getline(inFile, str)){
-        if(regex_match(str, def)){
-            // definition
+        if(regex_match(str, definition_matcher)){
             parse_definition(str);
-        }else if(regex_match(str, reg)){
-            // expression
-            parse_expression(str,pri++);
-        }else if(regex_match(str, k)){
-            //keywords
+        }else if(regex_match(str, expression_matcher)){
+            parse_expression(str,priority++);
+        }else if(regex_match(str, keywords_matcher)){
             keywords_punctuation_parsing(str);
-        }else if(regex_match(str, p)){
-            //punctuation
+        }else if(regex_match(str, punctuation_matcher)){
             keywords_punctuation_parsing(str);
         }else{
             cout << "Parser says: "+ str + ": Invalid Rule (or empty line)" << endl;
@@ -37,15 +32,12 @@ void Parser::parseFile(string filepath){
     }
     inFile.close();
     }
-
-/*handle spaces and remember order assumption.*/
-
 void Parser::parse_definition(string re_df) {
     int pos=re_df.find('=');
     string LHS = remove_spaces(re_df.substr(0,pos));
     string RHS=  re_df.substr(pos+1,re_df.size());
     if(re_df.find('-')!=string::npos){
-        vector<char>alphabet=expandDashes(remove_spaces(RHS));
+        vector<char>alphabet= get_ranges(remove_spaces(RHS));
         raw_RE_definitions.insert({LHS,alphabet});
     }
     else{
@@ -66,13 +58,16 @@ void Parser::parse_definition(string re_df) {
         RE_definitions.insert({LHS,a});
     }
 }
-//static map<string,pair<int,NFA>>tokens;
-//static vector<pair<string,string>>RE_expressions;
+
 void Parser::parse_expression(string re_ex,int priority){
     int pos=re_ex.find(':');
     string LHS = remove_spaces(re_ex.substr(0,pos));
     string RHS= re_ex.substr(pos+1,re_ex.size());
+//    cout<<"parse_expression:"<<RHS<<endl;
+//    cout<<"parse_expression:"<<RHS[RHS.find(";")]<<endl;
     vector<string>RHS_tokens= split_on_spacial_chars(RHS);
+//    cout<<"parse_expression:"<<RHS<<endl;
+//    cout<<"parse_expression:"<<RHS_tokens[0]<<endl;
     for(int i=0;i<RHS_tokens.size();i++) {
         string s = RHS_tokens.at(i);
         if(s=="\\"){
@@ -104,6 +99,8 @@ void Parser::keywords_punctuation_parsing(string keyword) {
         }
         else{
         string keyword_expression=s+":"+s;
+//        cout<<keyword_expression<<endl;
+//        cout<<"Keywords: "<<keyword_expression[keyword_expression.find(";")]<<endl;
         parse_expression(keyword_expression,-1);
         }
     }

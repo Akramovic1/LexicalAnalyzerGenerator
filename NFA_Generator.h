@@ -1,7 +1,3 @@
-//
-// Created by rana_ on 11/30/2022.
-//
-
 #ifndef PHASE_1__NFA_GENERATOR_H
 #define PHASE_1__NFA_GENERATOR_H
 #include "NFA.h"

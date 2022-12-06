@@ -1,7 +1,3 @@
-//
-// Created by mrrad on 11/29/2022.
-//
-
 #ifndef PHASE_1__NFA_H
 #define PHASE_1__NFA_H
 

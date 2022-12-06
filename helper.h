@@ -1,6 +1,3 @@
-//
-// Created by mrrad on 11/29/2022.
-//
 #include <bits/stdc++.h>
 #ifndef PHASE_1__HELPER_H
 #define PHASE_1__HELPER_H
@@ -25,11 +22,6 @@ static  string remove_first_last_space(string str){
 static vector<string> split_on_spacial_chars(string str) {
     vector<string> result;
     regex rgx(R"([+()*\|\-,:?\s\\]+)");
-//    sregex_token_iterator iter(str.begin(), str.end(), rgx, -1);
-//    sregex_token_iterator end;
-//    for (; iter != end; ++iter){
-//        result.push_back(*iter);
-//    }
     string current_string="";
     for(char c:str){
         if(regex_match(string(1,c),rgx)){
@@ -78,7 +70,7 @@ static string surround_parentheses(string input){
     return input;
 }
 
-//Function to return precedence of operators
+//return precedence of operators
 static int prec(string c)
 {
     if (c == "*"|| c=="+")
@@ -91,13 +83,11 @@ static int prec(string c)
         return -1;
 }
 
- //The main function to convert infix expression
- //to postfix expression
+ //convert infix expression to postfix expression
 static vector<string> infixToPostfix(vector<string>RE_expression_tokens)
 {
-    stack<string> st; // For stack operations, we are using
-    // C++ built in stack
-     vector<string>postfix;
+    stack<string> st;
+    vector<string>postfix;
 
     for (int i = 0; i < RE_expression_tokens.size(); i++) {
         string c = RE_expression_tokens.at(i);
@@ -142,24 +132,18 @@ static vector<string> infixToPostfix(vector<string>RE_expression_tokens)
     return postfix;
 }
 
-static vector<char> expandDashes(string in) {
-    char x,y;
-    vector<char> temp,tempo;
-    for(int i=0;i<in.length();++i){
-        temp.clear();
-        if(in[i]=='-'&&in[i-1]!='\\'&&in[i-1]<in[i+1]){
-            x=in[i-1];
-            y=in[i+1];
-            while(x<=y)
-                temp.push_back(x++);
-            tempo.push_back(temp[0]);
-            for(int j=1;j<temp.size();j++){
-//                tempo+='|';
-                tempo.push_back(temp[j]);
-            }
-//            in.replace(i-1,3,tempo);
+static vector<char> get_ranges(string range) {
+    range=remove_spaces(range);
+    vector<char>result;
+    while(range.find('-') != string::npos){
+        int pos=range.find('-');
+        int before=min(range[pos-1],range[pos+1]);
+        int after=max(range[pos-1],range[pos+1]);
+        range=range.substr(pos+1);
+        for(int i=before;i<=after;i++){
+            result.push_back(i);
         }
     }
-    return tempo;
+    return result;
 }
 #endif //PHASE_1__HELPER_H
