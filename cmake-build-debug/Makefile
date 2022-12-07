@@ -128,6 +128,30 @@ Phase_1_/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Phase_1_.dir\build.make CMakeFiles/Phase_1_.dir/build
 .PHONY : Phase_1_/fast
 
+Identifier.obj: Identifier.cpp.obj
+.PHONY : Identifier.obj
+
+# target to build an object file
+Identifier.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Phase_1_.dir\build.make CMakeFiles/Phase_1_.dir/Identifier.cpp.obj
+.PHONY : Identifier.cpp.obj
+
+Identifier.i: Identifier.cpp.i
+.PHONY : Identifier.i
+
+# target to preprocess a source file
+Identifier.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Phase_1_.dir\build.make CMakeFiles/Phase_1_.dir/Identifier.cpp.i
+.PHONY : Identifier.cpp.i
+
+Identifier.s: Identifier.cpp.s
+.PHONY : Identifier.s
+
+# target to generate assembly for a file
+Identifier.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Phase_1_.dir\build.make CMakeFiles/Phase_1_.dir/Identifier.cpp.s
+.PHONY : Identifier.cpp.s
+
 NFA.obj: NFA.cpp.obj
 .PHONY : NFA.obj
 
@@ -257,6 +281,9 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... Phase_1_
+	@echo ... Identifier.obj
+	@echo ... Identifier.i
+	@echo ... Identifier.s
 	@echo ... NFA.obj
 	@echo ... NFA.i
 	@echo ... NFA.s

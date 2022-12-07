@@ -7,7 +7,7 @@ void Identifier::parse_string(string filepath){
     inFile.open(filepath);
     string input_line;
     while(getline(inFile, input_line)) {
-        while(input_line.size()>0){
+        while(!input_line.empty()){
             int index=parsing_single_token(input_line);
             input_line=index==-1?input_line.substr(1,input_line.size()):input_line.substr(index+1,input_line.size());
         }
@@ -16,14 +16,14 @@ void Identifier::parse_string(string filepath){
 }
 int Identifier::parsing_single_token(string input) {
     int accepted_index = -1;
-    string accepted_token = "";
-    string acceptedString = "";
-    string accu = "";
+    string accepted_token;
+    string acceptedString;
+    string accu;
     NFA *totalNFA = NFA_Generator::total_NFA;
     vector<State *> current_states = epsilonClosure(totalNFA->start_state);
     for (int i = 0; i < input.size(); i++) {
         accu+=input[i];
-        if (current_states.size() == 0)break;
+        if (current_states.empty())break;
         vector<State *> comming_states = nextAndEpsilonClosures(current_states, input[i]);
         int accepted_priority = INT16_MAX;
         for (State *s: comming_states) {

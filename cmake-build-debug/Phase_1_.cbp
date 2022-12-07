@@ -82,6 +82,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="C:/Users/mrrad/OneDrive/Documents/GitHub/LexicalAnalyzerGenerator/Identifier.cpp">
+			<Option target="Phase_1_"/>
+		</Unit>
+		<Unit filename="C:/Users/mrrad/OneDrive/Documents/GitHub/LexicalAnalyzerGenerator/Identifier.h">
+			<Option target="Phase_1_"/>
+		</Unit>
 		<Unit filename="C:/Users/mrrad/OneDrive/Documents/GitHub/LexicalAnalyzerGenerator/NFA.cpp">
 			<Option target="Phase_1_"/>
 		</Unit>

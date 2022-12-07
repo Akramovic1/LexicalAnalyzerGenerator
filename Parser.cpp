@@ -7,7 +7,6 @@ map<string,vector<char>>Parser::raw_RE_definitions=map<string ,vector<char>>{};
 map<string,string>Parser::RE_definitions=map<string,string>{};
 map<string,pair<int,NFA*>>Parser::tokens=map<string,pair<int,NFA*>>{};
 vector<pair<string,string>>Parser::RE_expressions=vector<pair<string,string>>{};
-vector<string>Parser::punctuation=vector<string>{};
 void Parser::parseFile(string filepath){
     ifstream inFile;
     inFile.open(filepath);
@@ -63,11 +62,7 @@ void Parser::parse_expression(string re_ex,int priority){
     int pos=re_ex.find(':');
     string LHS = remove_spaces(re_ex.substr(0,pos));
     string RHS= re_ex.substr(pos+1,re_ex.size());
-//    cout<<"parse_expression:"<<RHS<<endl;
-//    cout<<"parse_expression:"<<RHS[RHS.find(";")]<<endl;
     vector<string>RHS_tokens= split_on_spacial_chars(RHS);
-//    cout<<"parse_expression:"<<RHS<<endl;
-//    cout<<"parse_expression:"<<RHS_tokens[0]<<endl;
     for(int i=0;i<RHS_tokens.size();i++) {
         string s = RHS_tokens.at(i);
         if(s=="\\"){
@@ -99,8 +94,6 @@ void Parser::keywords_punctuation_parsing(string keyword) {
         }
         else{
         string keyword_expression=s+":"+s;
-//        cout<<keyword_expression<<endl;
-//        cout<<"Keywords: "<<keyword_expression[keyword_expression.find(";")]<<endl;
         parse_expression(keyword_expression,-1);
         }
     }

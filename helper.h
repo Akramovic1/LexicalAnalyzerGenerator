@@ -6,19 +6,6 @@ static string remove_spaces(string input){
     input.erase(remove(input.begin(), input.end(), ' '), input.end());
     return input;
 }
-static bool isBothSpace(char const &lhs, char const &rhs) {
-    return lhs == rhs && iswspace(lhs);
-}
-static string remove_duplicate_spaces(string str) {
-    auto it = unique(str.begin(), str.end(), isBothSpace);
-    str.erase(it, str.end());
-    return str;
-}
-static  string remove_first_last_space(string str){
-    if(str.at(0)==' ') str = str.substr(1,str.length()-1);
-    if(str.at(str.length()-1)==' ') str = str.substr(0,str.length()-1);
-    return str;
-}
 static vector<string> split_on_spacial_chars(string str) {
     vector<string> result;
     regex rgx(R"([+()*\|\-,:?\s\\]+)");
@@ -83,7 +70,7 @@ static int prec(string c)
         return -1;
 }
 
- //convert infix expression to postfix expression
+//convert infix expression to postfix expression
 static vector<string> infixToPostfix(vector<string>RE_expression_tokens)
 {
     stack<string> st;

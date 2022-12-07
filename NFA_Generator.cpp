@@ -1,4 +1,3 @@
-
 #include "NFA_Generator.h"
 #include "helper.h"
 #include "State.h"
