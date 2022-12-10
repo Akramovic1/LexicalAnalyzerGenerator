@@ -7,11 +7,11 @@
 #include "Identifier.h"
 int main(){
     Parser p;
-    p.parseFile(R"(----------!!!! Input file path !!!!! ----------------)");
+    p.parseFile(R"(----------!!!!! Grammar file path !!!!! ----------------)");
     NFA_Generator g;
     g.generate_all_NFAs(Parser::RE_expressions,p.raw_RE_definitions);
     Identifier i;
-    i.parse_string(R"(----------!!!!! Grammar file path !!!!! ----------------)");
+    i.parse_string(R"(----------!!!! Input file path !!!!! ----------------)");
         for(pair<string,string> pair:i.acceptedTokens){
         cout<<pair.first<<":"<<pair.second<<endl;
     }
