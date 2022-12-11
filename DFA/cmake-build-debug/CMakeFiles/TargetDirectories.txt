@@ -1,3 +1,0 @@
-C:/Users/20127/Desktop/DFA/cmake-build-debug/CMakeFiles/DFA.dir
-C:/Users/20127/Desktop/DFA/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/20127/Desktop/DFA/cmake-build-debug/CMakeFiles/rebuild_cache.dir
