@@ -39,7 +39,7 @@ include CMakeFiles/rules.ninja
 #############################################
 # Logical path to working directory; prefix for absolute paths.
 
-cmake_ninja_workdir = C$:/Users/ahmed/Documents/GitHub/LexicalAnalyzerGenerator/cmake-build-debug/
+cmake_ninja_workdir = C$:/Users/ahmed/Downloads/LexicalAnalyzerGenerator/cmake-build-debug/
 # =============================================================================
 # Object build statements for EXECUTABLE target LexicalAnalyzerGenerator
 
@@ -49,17 +49,73 @@ cmake_ninja_workdir = C$:/Users/ahmed/Documents/GitHub/LexicalAnalyzerGenerator/
 
 build cmake_object_order_depends_target_LexicalAnalyzerGenerator: phony || CMakeFiles/LexicalAnalyzerGenerator.dir
 
-build CMakeFiles/LexicalAnalyzerGenerator.dir/main.cpp.obj: CXX_COMPILER__LexicalAnalyzerGenerator_Debug C$:/Users/ahmed/Documents/GitHub/LexicalAnalyzerGenerator/main.cpp || cmake_object_order_depends_target_LexicalAnalyzerGenerator
-  DEP_FILE = CMakeFiles\LexicalAnalyzerGenerator.dir\main.cpp.obj.d
+build CMakeFiles/LexicalAnalyzerGenerator.dir/DFA.cpp.obj: CXX_COMPILER__LexicalAnalyzerGenerator_Debug C$:/Users/ahmed/Downloads/LexicalAnalyzerGenerator/DFA.cpp || cmake_object_order_depends_target_LexicalAnalyzerGenerator
+  DEP_FILE = CMakeFiles\LexicalAnalyzerGenerator.dir\DFA.cpp.obj.d
   FLAGS = -g -std=gnu++14
+  INCLUDES = -IC:/Users/ahmed/Downloads/LexicalAnalyzerGenerator/.
   OBJECT_DIR = CMakeFiles\LexicalAnalyzerGenerator.dir
   OBJECT_FILE_DIR = CMakeFiles\LexicalAnalyzerGenerator.dir
   TARGET_COMPILE_PDB = CMakeFiles\LexicalAnalyzerGenerator.dir\
   TARGET_PDB = LexicalAnalyzerGenerator.pdb
 
-build CMakeFiles/LexicalAnalyzerGenerator.dir/MinimizedDfa.cpp.obj: CXX_COMPILER__LexicalAnalyzerGenerator_Debug C$:/Users/ahmed/Documents/GitHub/LexicalAnalyzerGenerator/MinimizedDfa.cpp || cmake_object_order_depends_target_LexicalAnalyzerGenerator
-  DEP_FILE = CMakeFiles\LexicalAnalyzerGenerator.dir\MinimizedDfa.cpp.obj.d
+build CMakeFiles/LexicalAnalyzerGenerator.dir/Identifier.cpp.obj: CXX_COMPILER__LexicalAnalyzerGenerator_Debug C$:/Users/ahmed/Downloads/LexicalAnalyzerGenerator/Identifier.cpp || cmake_object_order_depends_target_LexicalAnalyzerGenerator
+  DEP_FILE = CMakeFiles\LexicalAnalyzerGenerator.dir\Identifier.cpp.obj.d
   FLAGS = -g -std=gnu++14
+  INCLUDES = -IC:/Users/ahmed/Downloads/LexicalAnalyzerGenerator/.
+  OBJECT_DIR = CMakeFiles\LexicalAnalyzerGenerator.dir
+  OBJECT_FILE_DIR = CMakeFiles\LexicalAnalyzerGenerator.dir
+  TARGET_COMPILE_PDB = CMakeFiles\LexicalAnalyzerGenerator.dir\
+  TARGET_PDB = LexicalAnalyzerGenerator.pdb
+
+build CMakeFiles/LexicalAnalyzerGenerator.dir/main.cpp.obj: CXX_COMPILER__LexicalAnalyzerGenerator_Debug C$:/Users/ahmed/Downloads/LexicalAnalyzerGenerator/main.cpp || cmake_object_order_depends_target_LexicalAnalyzerGenerator
+  DEP_FILE = CMakeFiles\LexicalAnalyzerGenerator.dir\main.cpp.obj.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -IC:/Users/ahmed/Downloads/LexicalAnalyzerGenerator/.
+  OBJECT_DIR = CMakeFiles\LexicalAnalyzerGenerator.dir
+  OBJECT_FILE_DIR = CMakeFiles\LexicalAnalyzerGenerator.dir
+  TARGET_COMPILE_PDB = CMakeFiles\LexicalAnalyzerGenerator.dir\
+  TARGET_PDB = LexicalAnalyzerGenerator.pdb
+
+build CMakeFiles/LexicalAnalyzerGenerator.dir/NFA.cpp.obj: CXX_COMPILER__LexicalAnalyzerGenerator_Debug C$:/Users/ahmed/Downloads/LexicalAnalyzerGenerator/NFA.cpp || cmake_object_order_depends_target_LexicalAnalyzerGenerator
+  DEP_FILE = CMakeFiles\LexicalAnalyzerGenerator.dir\NFA.cpp.obj.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -IC:/Users/ahmed/Downloads/LexicalAnalyzerGenerator/.
+  OBJECT_DIR = CMakeFiles\LexicalAnalyzerGenerator.dir
+  OBJECT_FILE_DIR = CMakeFiles\LexicalAnalyzerGenerator.dir
+  TARGET_COMPILE_PDB = CMakeFiles\LexicalAnalyzerGenerator.dir\
+  TARGET_PDB = LexicalAnalyzerGenerator.pdb
+
+build CMakeFiles/LexicalAnalyzerGenerator.dir/NFA_Generator.cpp.obj: CXX_COMPILER__LexicalAnalyzerGenerator_Debug C$:/Users/ahmed/Downloads/LexicalAnalyzerGenerator/NFA_Generator.cpp || cmake_object_order_depends_target_LexicalAnalyzerGenerator
+  DEP_FILE = CMakeFiles\LexicalAnalyzerGenerator.dir\NFA_Generator.cpp.obj.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -IC:/Users/ahmed/Downloads/LexicalAnalyzerGenerator/.
+  OBJECT_DIR = CMakeFiles\LexicalAnalyzerGenerator.dir
+  OBJECT_FILE_DIR = CMakeFiles\LexicalAnalyzerGenerator.dir
+  TARGET_COMPILE_PDB = CMakeFiles\LexicalAnalyzerGenerator.dir\
+  TARGET_PDB = LexicalAnalyzerGenerator.pdb
+
+build CMakeFiles/LexicalAnalyzerGenerator.dir/Parser.cpp.obj: CXX_COMPILER__LexicalAnalyzerGenerator_Debug C$:/Users/ahmed/Downloads/LexicalAnalyzerGenerator/Parser.cpp || cmake_object_order_depends_target_LexicalAnalyzerGenerator
+  DEP_FILE = CMakeFiles\LexicalAnalyzerGenerator.dir\Parser.cpp.obj.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -IC:/Users/ahmed/Downloads/LexicalAnalyzerGenerator/.
+  OBJECT_DIR = CMakeFiles\LexicalAnalyzerGenerator.dir
+  OBJECT_FILE_DIR = CMakeFiles\LexicalAnalyzerGenerator.dir
+  TARGET_COMPILE_PDB = CMakeFiles\LexicalAnalyzerGenerator.dir\
+  TARGET_PDB = LexicalAnalyzerGenerator.pdb
+
+build CMakeFiles/LexicalAnalyzerGenerator.dir/SetStates.cpp.obj: CXX_COMPILER__LexicalAnalyzerGenerator_Debug C$:/Users/ahmed/Downloads/LexicalAnalyzerGenerator/SetStates.cpp || cmake_object_order_depends_target_LexicalAnalyzerGenerator
+  DEP_FILE = CMakeFiles\LexicalAnalyzerGenerator.dir\SetStates.cpp.obj.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -IC:/Users/ahmed/Downloads/LexicalAnalyzerGenerator/.
+  OBJECT_DIR = CMakeFiles\LexicalAnalyzerGenerator.dir
+  OBJECT_FILE_DIR = CMakeFiles\LexicalAnalyzerGenerator.dir
+  TARGET_COMPILE_PDB = CMakeFiles\LexicalAnalyzerGenerator.dir\
+  TARGET_PDB = LexicalAnalyzerGenerator.pdb
+
+build CMakeFiles/LexicalAnalyzerGenerator.dir/State.cpp.obj: CXX_COMPILER__LexicalAnalyzerGenerator_Debug C$:/Users/ahmed/Downloads/LexicalAnalyzerGenerator/State.cpp || cmake_object_order_depends_target_LexicalAnalyzerGenerator
+  DEP_FILE = CMakeFiles\LexicalAnalyzerGenerator.dir\State.cpp.obj.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -IC:/Users/ahmed/Downloads/LexicalAnalyzerGenerator/.
   OBJECT_DIR = CMakeFiles\LexicalAnalyzerGenerator.dir
   OBJECT_FILE_DIR = CMakeFiles\LexicalAnalyzerGenerator.dir
   TARGET_COMPILE_PDB = CMakeFiles\LexicalAnalyzerGenerator.dir\
@@ -73,7 +129,7 @@ build CMakeFiles/LexicalAnalyzerGenerator.dir/MinimizedDfa.cpp.obj: CXX_COMPILER
 #############################################
 # Link the executable LexicalAnalyzerGenerator.exe
 
-build LexicalAnalyzerGenerator.exe: CXX_EXECUTABLE_LINKER__LexicalAnalyzerGenerator_Debug CMakeFiles/LexicalAnalyzerGenerator.dir/main.cpp.obj CMakeFiles/LexicalAnalyzerGenerator.dir/MinimizedDfa.cpp.obj
+build LexicalAnalyzerGenerator.exe: CXX_EXECUTABLE_LINKER__LexicalAnalyzerGenerator_Debug CMakeFiles/LexicalAnalyzerGenerator.dir/DFA.cpp.obj CMakeFiles/LexicalAnalyzerGenerator.dir/Identifier.cpp.obj CMakeFiles/LexicalAnalyzerGenerator.dir/main.cpp.obj CMakeFiles/LexicalAnalyzerGenerator.dir/NFA.cpp.obj CMakeFiles/LexicalAnalyzerGenerator.dir/NFA_Generator.cpp.obj CMakeFiles/LexicalAnalyzerGenerator.dir/Parser.cpp.obj CMakeFiles/LexicalAnalyzerGenerator.dir/SetStates.cpp.obj CMakeFiles/LexicalAnalyzerGenerator.dir/State.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\LexicalAnalyzerGenerator.dir
@@ -89,7 +145,7 @@ build LexicalAnalyzerGenerator.exe: CXX_EXECUTABLE_LINKER__LexicalAnalyzerGenera
 # Utility command for edit_cache
 
 build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D C:\Users\ahmed\Documents\GitHub\LexicalAnalyzerGenerator\cmake-build-debug && "C:\Program Files\JetBrains\CLion 2022.2.3\bin\cmake\win\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
+  COMMAND = cmd.exe /C "cd /D C:\Users\ahmed\Downloads\LexicalAnalyzerGenerator\cmake-build-debug && "C:\Program Files\JetBrains\CLion 2022.2.3\bin\cmake\win\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
   DESC = No interactive CMake dialog available...
   restat = 1
 
@@ -100,7 +156,7 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D C:\Users\ahmed\Documents\GitHub\LexicalAnalyzerGenerator\cmake-build-debug && "C:\Program Files\JetBrains\CLion 2022.2.3\bin\cmake\win\bin\cmake.exe" --regenerate-during-build -SC:\Users\ahmed\Documents\GitHub\LexicalAnalyzerGenerator -BC:\Users\ahmed\Documents\GitHub\LexicalAnalyzerGenerator\cmake-build-debug"
+  COMMAND = cmd.exe /C "cd /D C:\Users\ahmed\Downloads\LexicalAnalyzerGenerator\cmake-build-debug && "C:\Program Files\JetBrains\CLion 2022.2.3\bin\cmake\win\bin\cmake.exe" --regenerate-during-build -SC:\Users\ahmed\Downloads\LexicalAnalyzerGenerator -BC:\Users\ahmed\Downloads\LexicalAnalyzerGenerator\cmake-build-debug"
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -118,7 +174,7 @@ build LexicalAnalyzerGenerator: phony LexicalAnalyzerGenerator.exe
 # =============================================================================
 
 #############################################
-# Folder: C:/Users/ahmed/Documents/GitHub/LexicalAnalyzerGenerator/cmake-build-debug
+# Folder: C:/Users/ahmed/Downloads/LexicalAnalyzerGenerator/cmake-build-debug
 
 build all: phony LexicalAnalyzerGenerator.exe
 

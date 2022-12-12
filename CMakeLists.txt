@@ -3,4 +3,23 @@ project(LexicalAnalyzerGenerator)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(LexicalAnalyzerGenerator main.cpp MinimizedDfa.cpp MinimizedDfa.h)
+include_directories(.)
+
+add_executable(LexicalAnalyzerGenerator
+        DFA.cpp
+        DFA.h
+        helper.h
+        Identifier.cpp
+        Identifier.h
+        main.cpp
+        minimize.h
+        NFA.cpp
+        NFA.h
+        NFA_Generator.cpp
+        NFA_Generator.h
+        Parser.cpp
+        Parser.h
+        SetStates.cpp
+        SetStates.h
+        State.cpp
+        State.h)
