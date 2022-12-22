@@ -299,4 +299,5 @@ CMakeFiles/Phase_1_.dir/main.cpp.obj: \
  C:\Users\mrrad\OneDrive\Documents\GitHub\LexicalAnalyzerGenerator\State.h \
  C:\Users\mrrad\OneDrive\Documents\GitHub\LexicalAnalyzerGenerator\helper.h \
  C:\Users\mrrad\OneDrive\Documents\GitHub\LexicalAnalyzerGenerator\NFA_Generator.h \
- C:\Users\mrrad\OneDrive\Documents\GitHub\LexicalAnalyzerGenerator\Identifier.h
+ C:\Users\mrrad\OneDrive\Documents\GitHub\LexicalAnalyzerGenerator\Identifier.h \
+ C:\Users\mrrad\OneDrive\Documents\GitHub\LexicalAnalyzerGenerator\parser_generator.h

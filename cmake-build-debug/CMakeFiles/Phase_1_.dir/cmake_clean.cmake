@@ -11,6 +11,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/Phase_1_.dir/State.cpp.obj.d"
   "CMakeFiles/Phase_1_.dir/main.cpp.obj"
   "CMakeFiles/Phase_1_.dir/main.cpp.obj.d"
+  "CMakeFiles/Phase_1_.dir/parser_generator.cpp.obj"
+  "CMakeFiles/Phase_1_.dir/parser_generator.cpp.obj.d"
   "Phase_1_.exe"
   "Phase_1_.exe.manifest"
   "Phase_1_.pdb"

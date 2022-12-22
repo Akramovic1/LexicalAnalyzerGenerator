@@ -6,9 +6,9 @@ static string remove_spaces(string input){
     input.erase(remove(input.begin(), input.end(), ' '), input.end());
     return input;
 }
-static vector<string> split_on_spacial_chars(string str) {
+static vector<string> split_on_spacial_chars(string str,regex rgx=regex(R"([+()*\|\-,:?\s\\]+)")) {
     vector<string> result;
-    regex rgx(R"([+()*\|\-,:?\s\\]+)");
+    //regex rgx(R"([+()*\|\-,:?\s\\]+)");
     string current_string="";
     for(char c:str){
         if(regex_match(string(1,c),rgx)){
@@ -130,6 +130,21 @@ static vector<char> get_ranges(string range) {
         for(int i=before;i<=after;i++){
             result.push_back(i);
         }
+    }
+    return result;
+}
+static string accumlator(vector<string>input,string delimter){
+    string result="";
+    for(string s:input){
+        result.append(s+delimter);
+    }
+    return result.substr(0,result.size()-1);
+
+}
+static vector<string> subvector(vector<string>v, int m, int n) {
+    vector<string>result;
+    for(int i=m;i<n;i++){
+        result.emplace_back(v[i]);
     }
     return result;
 }

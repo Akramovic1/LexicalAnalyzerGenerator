@@ -272,6 +272,30 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Phase_1_.dir\build.make CMakeFiles/Phase_1_.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+parser_generator.obj: parser_generator.cpp.obj
+.PHONY : parser_generator.obj
+
+# target to build an object file
+parser_generator.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Phase_1_.dir\build.make CMakeFiles/Phase_1_.dir/parser_generator.cpp.obj
+.PHONY : parser_generator.cpp.obj
+
+parser_generator.i: parser_generator.cpp.i
+.PHONY : parser_generator.i
+
+# target to preprocess a source file
+parser_generator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Phase_1_.dir\build.make CMakeFiles/Phase_1_.dir/parser_generator.cpp.i
+.PHONY : parser_generator.cpp.i
+
+parser_generator.s: parser_generator.cpp.s
+.PHONY : parser_generator.s
+
+# target to generate assembly for a file
+parser_generator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Phase_1_.dir\build.make CMakeFiles/Phase_1_.dir/parser_generator.cpp.s
+.PHONY : parser_generator.cpp.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -299,6 +323,9 @@ help:
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
+	@echo ... parser_generator.obj
+	@echo ... parser_generator.i
+	@echo ... parser_generator.s
 .PHONY : help
 
 

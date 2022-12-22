@@ -118,6 +118,12 @@
 		<Unit filename="C:/Users/mrrad/OneDrive/Documents/GitHub/LexicalAnalyzerGenerator/main.cpp">
 			<Option target="Phase_1_"/>
 		</Unit>
+		<Unit filename="C:/Users/mrrad/OneDrive/Documents/GitHub/LexicalAnalyzerGenerator/parser_generator.cpp">
+			<Option target="Phase_1_"/>
+		</Unit>
+		<Unit filename="C:/Users/mrrad/OneDrive/Documents/GitHub/LexicalAnalyzerGenerator/parser_generator.h">
+			<Option target="Phase_1_"/>
+		</Unit>
 		<Unit filename="C:/Users/mrrad/OneDrive/Documents/GitHub/LexicalAnalyzerGenerator/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
