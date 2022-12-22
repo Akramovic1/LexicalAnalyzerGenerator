@@ -6,14 +6,21 @@ static string remove_spaces(string input){
     input.erase(remove(input.begin(), input.end(), ' '), input.end());
     return input;
 }
+static string remove_leading_spaces(string str){
+    int i;
+    for(i=0;i<str.size();i++){
+          if(str[i]!=' ') break;
+    }
+    return str.substr(i,str.size());
+}
+
 static vector<string> split_on_spacial_chars(string str,regex rgx=regex(R"([+()*\|\-,:?\s\\]+)")) {
     vector<string> result;
-    //regex rgx(R"([+()*\|\-,:?\s\\]+)");
     string current_string="";
     for(char c:str){
         if(regex_match(string(1,c),rgx)){
             if(!current_string.empty()){
-                result.push_back(current_string);
+                result.push_back(remove_leading_spaces(current_string));
             }
             if(c!=' '){
                 result.push_back(string(1, c));
@@ -24,7 +31,7 @@ static vector<string> split_on_spacial_chars(string str,regex rgx=regex(R"([+()*
             current_string.append(string(1,c));
         }
     }
-    if(!current_string.empty())result.push_back(current_string);
+    if(!current_string.empty())result.push_back(remove_leading_spaces(current_string));
     return result;
 }
 static bool is_spacial_character(string c){

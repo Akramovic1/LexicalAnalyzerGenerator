@@ -35,4 +35,10 @@ int main(){
 //        for(pair<string,string> pair:i.acceptedTokens){
 //        cout<<pair.first<<":"<<pair.second<<endl;
 //    }
+
+//    string s="fg|abB | aB | cdg | cdeB | cfB";
+    pg.left_factor(0);
+    cout<<"......"<<endl;
+
+    //cout<<remove_leading_spaces("   aaa")<<endl;
 }

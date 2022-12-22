@@ -1,3 +1,1 @@
-S = A a | b
-A = A c | S d |S f
-B = B A c |B A | c
+S =fg|abB | aB | cdg | cdeB | cfB

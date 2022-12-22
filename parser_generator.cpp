@@ -52,10 +52,63 @@ void  parser_generator::eliminate_immediate_LR(int rule_index){
      }
 }
 
-void parser_generator::left_factor() {
-
+void parser_generator::left_factor(int index) {
+    for (index = 0; index < grammer_rules.size(); index++) {
+        string RHS = grammer_rules[index].second;
+        vector <string> productions = split_on_spacial_chars(RHS, regex(R"([\|])"));
+        sort(productions.begin(), productions.end());
+        map <string, vector<string>> groups;
+        int group_index = -1;
+        string group = productions[0];
+        int current = -1;
+        string refactored;
+        for (string p: productions) {
+            if (p == "|")continue;
+            string substr = get_match_substr(group, p);
+            if (substr.size() == 0) {
+                if (group_index < current - 1) {
+                    vector <string> group_str = remove_substr(subvector(productions, group_index + 1, current + 1),group);
+                    groups.insert({group, group_str});
+                } else {
+                    refactored.append(group + " |");
+                }
+                group = p;
+                group_index = current;
+            } else {
+                group = substr;
+            }
+            current++;
+        }
+        if (group_index < current - 1) {
+            vector <string> group_str = remove_substr(subvector(productions, group_index + 1, current + 1), group);
+            groups.insert({group, group_str});
+        } else {
+            refactored.append(group + " |");
+        }
+        for (auto const&[key, val]: groups) {
+            refactored.append(key + " " + key + "_dash " + "|");
+            grammer_rules.push_back({key + "_dash", accumlator(val, "|")});
+        }
+        grammer_rules[index].second = refactored.substr(0, refactored.size() - 1);
+    }
 }
 
+string parser_generator::get_match_substr(string group,string p){
+    for(int i=0;i<min(p.size(),group.size());i++){
+        if(group[i]!=p[i]){
+           return p.substr(0,i);
+        }
+    }
+    if(p.size()<group.size()) return p;
+    return group;
+}
+vector<string> parser_generator::remove_substr(vector<string>vec,string str){
+    vector<string>result;
+    for(int i=0;i<vec.size();i++){
+        result.emplace_back(vec[i].substr(str.size(),vec[i].size()));
+    }
+    return result;
+}
 void parser_generator::get_parsing_table() {
 
 }
