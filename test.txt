@@ -1,1 +1,5 @@
-S =fg|abB | aB | cdg | cdeB | cfB
+E = T E_dash
+E_dash = '+' T E_dash | Epsilon
+T = F T_dash
+T_dash = '*' F T_dash | Epsilon
+F = '(' E ')' | 'id'

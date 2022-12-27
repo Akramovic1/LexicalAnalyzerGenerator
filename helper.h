@@ -155,4 +155,56 @@ static vector<string> subvector(vector<string>v, int m, int n) {
     }
     return result;
 }
+static bool search_in_vector(vector<string>vec,string str){
+    return (find(vec.begin(), vec.end(), str) != vec.end());
+}
+// A recursive function used by topologicalSort
+static void topological_sortUtil(string v, map<string,bool>& visited,
+                                stack<string>& Stack,map<string,vector<string>>graph)
+{
+    // Mark the current node as visited.
+    visited[v] = true;
+
+    // Recur for all the vertices
+    // adjacent to this vertex
+    vector<string>::iterator i;
+    for (i = graph[v].begin(); i != graph[v].end(); ++i)
+        if (!visited[*i])
+            topological_sortUtil(*i, visited, Stack,graph);
+
+    // Push current vertex to stack
+    // which stores result
+    Stack.push(v);
+}
+
+// The function to do Topological Sort.
+// It uses recursive topologicalSortUtil()
+static vector<string> topological_sort(map<string,vector<string>>graph )
+{
+    vector<string> result;
+    stack<string> Stack;
+    int V=graph.size();
+    // Mark all the vertices as not visited
+    map<string,bool> visited;
+    for(auto const &[key, val]:graph){
+        visited.insert({key,false});
+    }
+
+    // Call the recursive helper function
+    // to store Topological
+    // Sort starting from all
+    // vertices one by one
+    for (auto const &[key, val]:graph)
+        if (!visited[key])
+            topological_sortUtil(key, visited, Stack,graph);
+
+    // Print contents of stack
+    while (Stack.empty() == false) {
+//        cout << Stack.top() << " ";
+        result.push_back(Stack.top());
+        Stack.pop();
+    }
+    return result;
+}
+
 #endif //PHASE_1__HELPER_H

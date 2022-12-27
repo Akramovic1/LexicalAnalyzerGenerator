@@ -2,6 +2,7 @@
 
 #include "parser_generator.h"
 #include "helper.h"
+#include "stack"
 void parser_generator::read_file(string filepath) {
     ifstream inFile;
     inFile.open(filepath);
@@ -13,10 +14,10 @@ void parser_generator::read_file(string filepath) {
             int pos=str.find('=');
             LHS = remove_spaces(str.substr(0,pos));
             string RHS=  str.substr(pos+1,str.size());
-            this->grammer_rules.emplace_back(make_pair(LHS,RHS));
+            grammer_rules.emplace_back(make_pair(LHS,RHS));
         }
         else{
-            this->grammer_rules.back().second.append(str);
+            grammer_rules.back().second.append(str);
         }
     }
 }
@@ -47,7 +48,7 @@ void  parser_generator::eliminate_immediate_LR(int rule_index){
      }
      if(!dash.second.empty()){
         grammer_rules.at(rule_index).second=temp.substr(0,temp.size()-1);
-        dash.second.append(" epsilon");
+        dash.second.append(" Epsilon");
         grammer_rules.emplace_back(dash);
      }
 }
@@ -109,9 +110,6 @@ vector<string> parser_generator::remove_substr(vector<string>vec,string str){
     }
     return result;
 }
-void parser_generator::get_parsing_table() {
-
-}
 
 void parser_generator::substitute(int i,int j){
     pair<string,string> rule_i=grammer_rules[i];
@@ -134,3 +132,158 @@ vector<string>rule_i_productions= split_on_spacial_chars(rule_i.second, regex(R"
     string rule_i_prod_final=accumlator(rule_i_productions, " ");
     grammer_rules.at(i).second=rule_i_prod_final;
 }
+
+
+void parser_generator::get_first_sets(){
+    stack<string> s;
+    for (auto const&[key, val]: rules_map) {
+        first_sets.insert({key,set<string>{}});
+    }
+    for (auto const&[key, val]: rules_map) {
+        s.push(key);
+        while(!s.empty()){
+            first_for_one_key(key,s);
+        }
+    }
+
+}
+void parser_generator::get_parsing_table() {
+    for(pair<string,string> p:grammer_rules){
+        rules_map.insert({p.first, split_on_spacial_chars(p.second,regex(R"([\|])"))});
+    }
+    get_first_sets();
+    get_follow_sets();
+    create_table();
+
+}
+
+void parser_generator::create_table(){
+    for(auto const&[key, val]: rules_map) {
+        for(string production:val){
+            if (production.find("|") != string::npos)continue;
+            if(production=="Epsilon") continue;
+            vector<string> prod_parts = split_on_spacial_chars(production,regex(R"([\s]+)"));
+            if(is_terminal(prod_parts[0])){
+                if(table[key].count(prod_parts[0])!=0)perror("Not LL(1)");
+                table[key][prod_parts[0]]=production;
+            } else{
+                for(string terminal:first_sets[prod_parts[0]]){
+                    if(table[key].count(terminal)!=0)perror("Not LL(1)");
+                    table[key][terminal]=production;
+                }
+            }
+        }
+        bool eps=has_epsilon(rules_map[key]);
+            for(string follow:follow_sets[key]){
+                if(table[key].count(follow)!=0)perror("Not LL(1)");
+                table[key][follow]=eps?"Epsilon":"Sync";
+            }
+    }
+
+}
+
+void parser_generator::get_follow_sets(){
+    map<string,vector<string>> graph = get_graph();
+    follow_sets[grammer_rules[0].first].insert("$");
+    vector<string> order = topological_sort(graph);
+    for(string str:order){
+        get_follow_for_one_key(str,graph);
+    }
+}
+
+
+
+void parser_generator::first_for_one_key(const string& key,stack <string>& s) {
+    string current_key=s.top();
+    s.pop();
+    vector<string> productions = rules_map[current_key];
+     for(string p:productions){
+         if (p.find("|") != string::npos)continue;
+         vector<string> prod_parts = split_on_spacial_chars(p,regex(R"([\s]+)"));
+         if(is_terminal(prod_parts[0])){
+             if(prod_parts[0]=="Epsilon") {
+                 if(has_epsilon(rules_map[key])) {
+                     first_sets.at(key).insert(prod_parts[0]);
+                 }
+             }
+             else{
+                 first_sets.at(key).insert(prod_parts[0]);
+             }
+         }else{
+             s.push(prod_parts[0]);
+             int i;
+             for(i=0;i<prod_parts.size();i++){
+                 if(has_epsilon(rules_map[prod_parts[i]]) && (i+1)<prod_parts.size()){
+                     s.push(prod_parts[i+1]);
+                 }else{
+                     break;
+                 }
+             }
+             if(i==prod_parts.size()){
+
+             }
+         }
+     }
+}
+
+bool parser_generator::is_terminal(string str) {
+    regex terminal(R"('.*')");
+    return regex_match(str,terminal)||str=="Epsilon";
+}
+
+bool parser_generator::has_epsilon(vector<string> prods) {
+    for (string s:prods) {
+        s=remove_spaces(s);
+        if(s=="Epsilon")return true;
+    }
+    return false;
+}
+
+map<string,vector<string>> parser_generator::get_graph(){
+    map<string,vector<string>> right_most;
+    for(auto const&[key, val]:rules_map){
+        right_most.insert({key,vector<string>{}});
+        for(string prod:val){
+            vector<string> prod_parts = split_on_spacial_chars(prod,regex(R"([\s]+)"));
+            for(int j=prod_parts.size()-1;j>=0;j--){
+                if(prod_parts[j]=="Epsilon"||prod_parts[j]=="|"||is_terminal(prod_parts[j])) {
+                    break;
+                }
+                if(prod_parts[j]!=key) {
+                    right_most[key].push_back(prod_parts[j]);
+                }
+                if (!has_epsilon(rules_map[prod_parts[j]]))
+                    break;
+            }
+        }
+    }
+    return right_most;
+}
+
+void parser_generator::get_follow_for_one_key(string str,map<string,vector<string>> right_most) {
+    for (auto const &[key, val]: rules_map) {
+        for (string prod: val) {
+            if (prod.find("|") != string::npos)continue;
+            vector <string> prod_parts = split_on_spacial_chars(prod, regex(R"([\s]+)"));
+            for (int i = 1; i < prod_parts.size(); i++) {
+                if (prod_parts[i - 1] == str) {
+                    if (is_terminal(prod_parts[i])) {
+                        follow_sets[str].insert(prod_parts[i]);
+                    } else {
+                        follow_sets[str].insert(first_sets[prod_parts[i]].begin(), first_sets[prod_parts[i]].end());//
+                    }
+                    if(follow_sets[str].find("Epsilon")!=follow_sets[str].end())
+                        follow_sets[str].erase("Epsilon");
+                    }
+            }
+
+            if(search_in_vector(right_most[key],str)){//
+                follow_sets[str].insert(follow_sets[key].begin(),follow_sets[key].end());//
+            }
+        }
+    }
+}
+
+
+
+
