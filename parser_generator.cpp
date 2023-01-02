@@ -219,8 +219,8 @@ void parser_generator::first_for_one_key(const string& key,stack <string>& s) {
                      break;
                  }
              }
-             if(i==prod_parts.size()){
-
+             if(i==prod_parts.size()-1 && has_epsilon(rules_map[prod_parts[i]])){
+                 first_sets.at(key).insert("Epsilon");
              }
          }
      }
