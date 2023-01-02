@@ -284,6 +284,71 @@ void parser_generator::get_follow_for_one_key(string str,map<string,vector<strin
     }
 }
 
+vector<string> parser_generator::LL1_parse(string input) {
+    vector<string> result;
+    stack<string> s;
+    s.push("$");
+    s.push(grammer_rules[0].first);
+    input+="$";
+    int i=0;
+    while(!s.empty()){
+        string top=s.top();
+        if(top=="$"){
+            if(input[i]=='$'){
+                result.push_back("Accepted");
+                return result;
+            }else{
+                result.push_back("Rejected");
+                return result;
+            }
+        }
+        if(is_terminal(top)){
+            if(top[0]=='\''){
+                if(top[1]==input[i]){
+                    s.pop();
+                    i++;
+                }else{
+                    result.push_back("Error: missing "+ top + ", inserted");
+                    s.pop();
+                }
+            }else{
+                if(top==input.substr(i,top.size())){
+                    s.pop();
+                    i+=top.size();
+                }else{
+                    result.push_back("Rejected");
+                    return result;
+                }
+            }
+        }else{
+            string terminal = "\'" + input.substr(i,1) + "\'";
+            if(terminal == "\'$\'") terminal="$";
+            if(table[top].count(terminal)==0){
+                result.push_back("Error:(illegal" + top + ")" +  " - " + "discarded " + terminal);
+                i++;
+                continue;
+            }
+            string production=table[top][terminal];
+            if(production=="Sync"){
+                result.push_back("Error");
+                s.pop();
+            }
+            else if(production=="Epsilon"){
+                result.push_back(top+"->"+production);
+                s.pop();
+            }else{
+                s.pop();
+                vector<string> prod_parts = split_on_spacial_chars(production,regex(R"([\s]+)"));
+                result.push_back(top+"->"+production);
+                for(int j=prod_parts.size()-1;j>=0;j--){
+                    s.push(prod_parts[j]);
+                }
+            }
+        }
+    }
+    return result;
+}
+
 
 
 
