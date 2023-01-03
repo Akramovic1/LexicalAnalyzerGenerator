@@ -285,7 +285,7 @@ void parser_generator::get_follow_for_one_key(string str,map<string,vector<strin
 }
 
 void parser_generator::LL1_parseFinal() {
-    vector<string> input_tokens = {"id", "id", "id", "$"};
+    vector<string> input_tokens = {"(", ")", "$"};
     stack<string> s = stack<string>();
     s.push("$");
     s.push(grammer_rules[0].first);
@@ -335,7 +335,7 @@ vector<string> parser_generator::LL1_parse(string input, stack<string>& s) {
             }
             string production=table[top][terminal];
             if(production=="Sync"){
-                result.push_back("Error");
+                result.push_back("Error Panic Mode Sync");
                 s.pop();
             }
             else if(production=="Epsilon"){
