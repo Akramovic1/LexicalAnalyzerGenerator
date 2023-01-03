@@ -41,7 +41,7 @@ void  parser_generator::eliminate_immediate_LR(int rule_index){
     pair<string,string>dash= make_pair(rule.first+"_dash","");
     string temp;
      for(int i=0;i<productions.size();i++){
-         if(productions[i]=="|")continue;
+         if(productions[i].find("|") != string::npos)continue;
          vector<string> prod_parts = split_on_spacial_chars(productions[i],regex(R"([\s]+)"));
          if(prod_parts[0]==rule.first){
              string accu=accumlator(subvector(prod_parts,1,prod_parts.size()), " ");
@@ -70,7 +70,7 @@ void parser_generator::left_factor() {
         int current = -1;
         string refactored;
         for (string p: productions) {
-            if (p == "|")continue;
+            if (p.find("|") != string::npos)continue;
             string substr = get_match_substr(group, p);
             if (substr.size() == 0) {
                 if (group_index < current - 1) {
@@ -178,7 +178,7 @@ void parser_generator::create_table(){
     for(auto const&[key, val]: rules_map) {
         for(string production:val){
             if (production.find("|") != string::npos)continue;
-            if(production=="Epsilon") continue;
+            if(production.find("Epsilon") != string::npos) continue;
             vector<string> prod_parts = split_on_spacial_chars(production,regex(R"([\s]+)"));
             if(is_terminal(prod_parts[0])){
                 if(table[key].count(prod_parts[0])!=0)cout<<"Not LL(1)"<<endl;
@@ -218,7 +218,7 @@ void parser_generator::first_for_one_key(const string& key,stack <string>& s) {
          if (p.find("|") != string::npos)continue;
          vector<string> prod_parts = split_on_spacial_chars(p,regex(R"([\s]+)"));
          if(is_terminal(prod_parts[0])){
-             if(prod_parts[0]=="Epsilon") {
+             if(prod_parts[0].find("Epsilon") != string::npos) {
                  if(has_epsilon(rules_map[key])) {
                      first_sets.at(key).insert(prod_parts[0]);
                  }
@@ -245,13 +245,13 @@ void parser_generator::first_for_one_key(const string& key,stack <string>& s) {
 
 bool parser_generator::is_terminal(string str) {
     regex terminal(R"('.*')");
-    return regex_match(str,terminal)||str=="Epsilon";
+    return regex_match(str,terminal)||str.find("Epsilon") != string::npos;
 }
 
 bool parser_generator::has_epsilon(vector<string> prods) {
     for (string s:prods) {
         s=remove_spaces(s);
-        if(s=="Epsilon")return true;
+        if(s.find("Epsilon") != string::npos)return true;
     }
     return false;
 }
@@ -263,7 +263,7 @@ map<string,vector<string>> parser_generator::get_graph(){
         for(string prod:val){
             vector<string> prod_parts = split_on_spacial_chars(prod,regex(R"([\s]+)"));
             for(int j=prod_parts.size()-1;j>=0;j--){
-                if(prod_parts[j]=="Epsilon"||prod_parts[j]=="|"||is_terminal(prod_parts[j])) {
+                if(prod_parts[j].find("Epsilon") != string::npos||prod_parts[j].find("|") != string::npos||is_terminal(prod_parts[j])) {
                     break;
                 }
                 if(prod_parts[j]!=key) {
