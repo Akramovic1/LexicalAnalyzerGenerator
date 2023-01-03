@@ -206,6 +206,16 @@ static vector<string> topological_sort(map<string,vector<string>>graph )
         Stack.pop();
     }
     return result;
+
+}
+static string group_naming(string str){
+    vector<string>parts= split_on_spacial_chars(str,regex(R"([\s]+)"));
+    string result="";
+    for(int i=0;i<parts.size()-1;i++){
+        result+=parts[i]+"_";
+    }
+    result+=parts[parts.size()-1];
+    return result;
 }
 
 #endif //PHASE_1__HELPER_H

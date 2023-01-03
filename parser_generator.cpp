@@ -58,6 +58,28 @@ void  parser_generator::eliminate_immediate_LR(int rule_index){
      }
 
 }
+void parser_generator::substitute(int i,int j){
+    pair<string,string> rule_i=grammer_rules[i];
+    pair<string,string> rule_j=grammer_rules[j];
+    vector<string>rule_i_productions= split_on_spacial_chars(rule_i.second, regex(R"([\|])"));
+    for(int i=0; i < rule_i_productions.size(); i++){
+        string rule_i_prod=rule_i_productions[i];
+        vector<string> rule_i_prod_part= split_on_spacial_chars(rule_i_prod,regex(R"([\s]+)"));
+        if(rule_i_prod_part[0]==rule_j.first){
+            string accu=accumlator(subvector(rule_i_prod_part,1,rule_i_prod_part.size()), " ");
+            vector<string>rule_j_productions=split_on_spacial_chars(rule_j.second, regex(R"([\|])"));
+            for(int j=0;j<rule_j_productions.size();j++){
+                if(rule_j_productions[j]!="|")
+                    rule_j_productions[j].append(" "+accu);
+            }
+            string rule_j_substitution=accumlator(rule_j_productions, " ");
+            rule_i_productions[i]=rule_j_substitution;
+        }
+    }
+    string rule_i_prod_final=accumlator(rule_i_productions, " ");
+    grammer_rules.at(i).second=rule_i_prod_final;
+}
+
 
 void parser_generator::left_factor() {
     for (int index = 0; index < grammer_rules.size(); index++) {
@@ -88,6 +110,7 @@ void parser_generator::left_factor() {
         }
         if (group_index < current - 1) {
             vector <string> group_str = remove_substr(subvector(productions, group_index + 1, current + 1), group);
+
             groups.insert({group, group_str});
         } else {
             refactored.append(group + " |");
@@ -98,6 +121,7 @@ void parser_generator::left_factor() {
                 clean_key=remove_spaces(clean_key);
                 clean_key.erase(remove(clean_key.begin(), clean_key.end(), '\''),clean_key.end());
             }
+            clean_key= group_naming(clean_key);
             refactored.append(key + " " + clean_key + "_dash " + "|");
             grammer_rules.push_back({clean_key + "_dash", accumlator(val, "|")});
         }
@@ -124,32 +148,22 @@ vector<string> parser_generator::remove_substr(vector<string>vec,string str){
     vector<string>result;
     for(int i=0;i<vec.size();i++){
         result.emplace_back(vec[i].substr(str.size(),vec[i].size()));
+        if(result[i]==""){
+            result[i]="Epsilon";
+        }
     }
     return result;
 }
 
-void parser_generator::substitute(int i,int j){
-    pair<string,string> rule_i=grammer_rules[i];
-    pair<string,string> rule_j=grammer_rules[j];
-vector<string>rule_i_productions= split_on_spacial_chars(rule_i.second, regex(R"([\|])"));
-    for(int i=0; i < rule_i_productions.size(); i++){
-        string rule_i_prod=rule_i_productions[i];
-        vector<string> rule_i_prod_part= split_on_spacial_chars(rule_i_prod,regex(R"([\s]+)"));
-        if(rule_i_prod_part[0]==rule_j.first){
-            string accu=accumlator(subvector(rule_i_prod_part,1,rule_i_prod_part.size()), " ");
-            vector<string>rule_j_productions=split_on_spacial_chars(rule_j.second, regex(R"([\|])"));
-            for(int j=0;j<rule_j_productions.size();j++){
-                if(rule_j_productions[j]!="|")
-                rule_j_productions[j].append(" "+accu);
-            }
-            string rule_j_substitution=accumlator(rule_j_productions, " ");
-            rule_i_productions[i]=rule_j_substitution;
-        }
+void parser_generator::get_parsing_table() {
+    for(pair<string,string> p:grammer_rules){
+        rules_map.insert({p.first, split_on_spacial_chars(p.second,regex(R"([\|])"))});
     }
-    string rule_i_prod_final=accumlator(rule_i_productions, " ");
-    grammer_rules.at(i).second=rule_i_prod_final;
+    get_first_sets();
+    get_follow_sets();
+    create_table();
+    write_table_results();
 }
-
 
 void parser_generator::get_first_sets(){
     stack<string> s;
@@ -164,14 +178,14 @@ void parser_generator::get_first_sets(){
     }
 
 }
-void parser_generator::get_parsing_table() {
-    for(pair<string,string> p:grammer_rules){
-        rules_map.insert({p.first, split_on_spacial_chars(p.second,regex(R"([\|])"))});
+void parser_generator::get_follow_sets(){
+    map<string,vector<string>> graph = get_graph();
+    follow_sets[grammer_rules[0].first].insert("$");
+    vector<string> order = topological_sort(graph);
+    //follow_sets[order[0]].insert("$");
+    for(string str:order){
+        get_follow_for_one_key(str,graph);
     }
-    get_first_sets();
-    get_follow_sets();
-    create_table();
-    write_table_results();
 }
 
 void parser_generator::create_table(){
@@ -198,19 +212,6 @@ void parser_generator::create_table(){
     }
 
 }
-
-void parser_generator::get_follow_sets(){
-    map<string,vector<string>> graph = get_graph();
-//    follow_sets[grammer_rules[0].first].insert("$");
-    vector<string> order = topological_sort(graph);
-    follow_sets[order[0]].insert("$");
-    for(string str:order){
-        get_follow_for_one_key(str,graph);
-    }
-}
-
-
-
 void parser_generator::first_for_one_key(const string& key,stack <string>& s) {
     string current_key=s.top();
     s.pop();
