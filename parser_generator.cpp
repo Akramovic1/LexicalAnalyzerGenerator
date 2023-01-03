@@ -284,58 +284,66 @@ void parser_generator::get_follow_for_one_key(string str,map<string,vector<strin
     }
 }
 
-vector<string> parser_generator::LL1_parse(string input) {
-    vector<string> result;
-    stack<string> s;
+void parser_generator::LL1_parseFinal() {
+    vector<string> input_tokens = {"(", "id", ")", "$"};
+    stack<string> s = stack<string>();
     s.push("$");
     s.push(grammer_rules[0].first);
-    input+="$";
-    int i=0;
-    while(!s.empty()){
+    for (int i = 0; i < input_tokens.size(); i++){
+        vector<string> res = LL1_parse(input_tokens[i], s);
+        for (string str:res) {
+            cout << str << endl;
+        }
+    }
+}
+
+vector<string> parser_generator::LL1_parse(string input, stack<string>& s) {
+    vector<string> result;
+    bool flag = true;
+    while(flag){
         string top=s.top();
         if(top=="$"){
-            if(input[i]=='$'){
-                result.push_back("Accepted");
+            if(input == "$"){
+                result.push_back("Token Accepted");
                 return result;
             }else{
-                result.push_back("Rejected");
+                result.push_back("Token Rejected");
                 return result;
             }
         }
         if(is_terminal(top)){
             if(top[0]=='\''){
-                if(top[1]==input[i]){
+                if(top.substr(1, input.size())==input){
                     s.pop();
-                    i++;
+                    result.push_back("Matched "+top);
+                    flag = false;
                 }else{
                     result.push_back("Error: missing "+ top + ", inserted");
                     s.pop();
+                    flag = false;
                 }
             }else{
-                if(top==input.substr(i,top.size())){
-                    s.pop();
-                    i+=top.size();
-                }else{
-                    result.push_back("Rejected");
-                    return result;
-                }
+                result.push_back("Rejected");
+                return result;
             }
         }else{
-            string terminal = "\'" + input.substr(i,1) + "\'";
+            string terminal = "\'" + input + "\'";
             if(terminal == "\'$\'") terminal="$";
             if(table[top].count(terminal)==0){
                 result.push_back("Error:(illegal" + top + ")" +  " - " + "discarded " + terminal);
-                i++;
+                flag = false;
                 continue;
             }
             string production=table[top][terminal];
             if(production=="Sync"){
                 result.push_back("Error");
                 s.pop();
+                flag = false;
             }
             else if(production=="Epsilon"){
                 result.push_back(top+"->"+production);
                 s.pop();
+                flag = false;
             }else{
                 s.pop();
                 vector<string> prod_parts = split_on_spacial_chars(production,regex(R"([\s]+)"));

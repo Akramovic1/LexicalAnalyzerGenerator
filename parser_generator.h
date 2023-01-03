@@ -28,7 +28,10 @@ bool has_epsilon(vector<string> prods);
 map<string,vector<string>> get_graph();
 void get_follow_for_one_key(string str,map<string,vector<string>> right_most);
 void create_table();
-vector<string> LL1_parse(string input);
+void LL1_parseFinal();
+vector<string> LL1_parse(string input, stack<string>& s);
+
+
 };
 
 

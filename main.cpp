@@ -18,8 +18,9 @@ int main(){
 //        cout<<pair.first<<":"<<pair.second<<endl;
 //    }
     parser_generator pg;
-    pg.read_file(R"(C:\Users\ahmed\Documents\GitHub\LexicalAnalyzerGenerator\test2.txt)");
+    pg.read_file(R"(C:\Users\ahmed\Documents\GitHub\LexicalAnalyzerGenerator\test.txt)");
     pg.get_parsing_table();
+    pg.LL1_parseFinal();
 //    for(auto it = pg.table.cbegin(); it != pg.table.cend(); ++it){
 //        std::cout << it->first << " " << ">>>>>> ";
 //        for (auto it2 = it->second.cbegin(); it2 != it->second.cend(); ++it2){
@@ -28,20 +29,14 @@ int main(){
 //        std::cout << "\n";
 //    }
 
-    string input1 = "aab";
-    vector<string> res1;
-    cout << "\n" << "Test 1" << "\n" <<endl;
-    res1 = pg.LL1_parse(input1);
-    for (int i = 0; i < res1.size(); i++){
-        cout << res1[i] << endl;
-    }
-    string input2 = "ceadb";
-    vector<string> res2;
-    cout << "\n" << "Test 2" << "\n" <<endl;
-    res2 = pg.LL1_parse(input2);
-    for (int i = 0; i < res2.size(); i++){
-        cout << res2[i] << endl;
-    }
+//    string input1 = "(id)";
+//    vector<string> res1;
+//    cout << "\n" << "Test 1" << "\n" <<endl;
+//    res1 = pg.LL1_parse(input1);
+//    for (int i = 0; i < res1.size(); i++){
+//        cout << res1[i] << endl;
+//    }
+
 //    for(auto it = pg.grammer_rules.cbegin(); it != pg.grammer_rules.cend(); ++it){
 //        std::cout << it->first << " " << it->second << "\n";
 //    }
