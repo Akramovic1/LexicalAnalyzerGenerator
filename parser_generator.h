@@ -14,7 +14,7 @@ map<string,map<string,string>> table;
 map<string,set<string>> follow_sets;
 void read_file(string filepath);
 void removeLR();
-void left_factor(int index);
+void left_factor();
 void get_parsing_table();
 void substitute(int i,int j);
 void eliminate_immediate_LR(int rule_index);
@@ -28,6 +28,11 @@ bool has_epsilon(vector<string> prods);
 map<string,vector<string>> get_graph();
 void get_follow_for_one_key(string str,map<string,vector<string>> right_most);
 void create_table();
+void print_grammer_rules();
+
+    void write_grammer_rules(string title);
+
+    void write_table_results();
 };
 
 

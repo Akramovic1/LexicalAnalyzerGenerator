@@ -3,6 +3,7 @@
 #include "parser_generator.h"
 #include "helper.h"
 #include "stack"
+
 void parser_generator::read_file(string filepath) {
     ifstream inFile;
     inFile.open(filepath);
@@ -29,6 +30,10 @@ void parser_generator::removeLR() {
         }
         eliminate_immediate_LR(i);
     }
+    cout<<"\nAfter eliminate Left Recursion:"<<endl;
+    cout<<"_______________________________\n"<<endl;
+    print_grammer_rules();
+    write_grammer_rules("After eliminate Left Recursion:");
 }
 void  parser_generator::eliminate_immediate_LR(int rule_index){
     pair<string,string> rule=grammer_rules[rule_index];
@@ -51,10 +56,11 @@ void  parser_generator::eliminate_immediate_LR(int rule_index){
         dash.second.append(" Epsilon");
         grammer_rules.emplace_back(dash);
      }
+
 }
 
-void parser_generator::left_factor(int index) {
-    for (index = 0; index < grammer_rules.size(); index++) {
+void parser_generator::left_factor() {
+    for (int index = 0; index < grammer_rules.size(); index++) {
         string RHS = grammer_rules[index].second;
         vector <string> productions = split_on_spacial_chars(RHS, regex(R"([\|])"));
         sort(productions.begin(), productions.end());
@@ -87,17 +93,28 @@ void parser_generator::left_factor(int index) {
             refactored.append(group + " |");
         }
         for (auto const&[key, val]: groups) {
-            refactored.append(key + " " + key + "_dash " + "|");
-            grammer_rules.push_back({key + "_dash", accumlator(val, "|")});
+            string clean_key=key;
+            if(is_terminal(clean_key)){
+                clean_key=remove_spaces(clean_key);
+                clean_key.erase(remove(clean_key.begin(), clean_key.end(), '\''),clean_key.end());
+            }
+            refactored.append(key + " " + clean_key + "_dash " + "|");
+            grammer_rules.push_back({clean_key + "_dash", accumlator(val, "|")});
         }
         grammer_rules[index].second = refactored.substr(0, refactored.size() - 1);
     }
+    cout<<"\nAfter Left Factoring:"<<endl;
+    cout<<"_____________________\n"<<endl;
+    print_grammer_rules();
+    write_grammer_rules("After Left Factoring:");
 }
 
 string parser_generator::get_match_substr(string group,string p){
-    for(int i=0;i<min(p.size(),group.size());i++){
-        if(group[i]!=p[i]){
-           return p.substr(0,i);
+    vector<string>space_split_group= split_on_spacial_chars(group,regex(R"([\s]+)"));
+    vector<string>space_split_p= split_on_spacial_chars(p,regex(R"([\s]+)"));
+    for(int i=0;i<min(space_split_p.size(),space_split_group.size());i++){
+        if(space_split_group[i]!=space_split_p[i]){
+           return accumlator(subvector(space_split_p,0,i)," ");
         }
     }
     if(p.size()<group.size()) return p;
@@ -154,7 +171,7 @@ void parser_generator::get_parsing_table() {
     get_first_sets();
     get_follow_sets();
     create_table();
-
+    write_table_results();
 }
 
 void parser_generator::create_table(){
@@ -164,18 +181,18 @@ void parser_generator::create_table(){
             if(production=="Epsilon") continue;
             vector<string> prod_parts = split_on_spacial_chars(production,regex(R"([\s]+)"));
             if(is_terminal(prod_parts[0])){
-                if(table[key].count(prod_parts[0])!=0)perror("Not LL(1)");
+                if(table[key].count(prod_parts[0])!=0)cout<<"Not LL(1)"<<endl;
                 table[key][prod_parts[0]]=production;
             } else{
                 for(string terminal:first_sets[prod_parts[0]]){
-                    if(table[key].count(terminal)!=0)perror("Not LL(1)");
+                    if(table[key].count(terminal)!=0)cout<<"Not LL(1)"<<endl;
                     table[key][terminal]=production;
                 }
             }
         }
         bool eps=has_epsilon(rules_map[key]);
             for(string follow:follow_sets[key]){
-                if(table[key].count(follow)!=0)perror("Not LL(1)");
+                if(table[key].count(follow)!=0)cout<<"Not LL(1)"<<endl;
                 table[key][follow]=eps?"Epsilon":"Sync";
             }
     }
@@ -282,6 +299,59 @@ void parser_generator::get_follow_for_one_key(string str,map<string,vector<strin
             }
         }
     }
+}
+void parser_generator::print_grammer_rules(){
+    for(pair<string,string>p:grammer_rules){
+        cout<<p.first+" = "+p.second<<endl;
+    }
+
+}
+void parser_generator::write_grammer_rules(string title){
+    fstream fout;
+    fout.open(output_path,ios::out | ios::app);
+    fout<<"\n"+title<<"\n";
+    for(pair<string,string>p:grammer_rules){
+        fout<<p.first+","+p.second<<"\n";
+    }
+    fout<<"\n";
+    fout.flush();
+    fout.close();
+}
+void parser_generator::write_table_results(){
+    fstream fout;
+    fout.open(output_path,ios::out | ios::app);
+    fout<<"\nFirst_sets"<<"\n";
+
+    for(pair<string,set<string>>p:first_sets){
+        fout<<p.first+",";
+        for(string s:p.second){
+            fout<<s+" ";
+        }
+        fout<<"\n";
+    }
+    fout<<"\nFollow_sets:"<<"\n";
+
+    for(pair<string,set<string>>p:follow_sets){
+        fout<<p.first+",";
+        for(string s:p.second){
+            fout<<s+" ";
+        }
+        fout<<"\n";
+    }
+    fout<<"\nParsing table:"<<"\n";
+
+
+    for(auto const&[key, val]:table){
+        fout<<key+"\n";
+        for(auto const&[key_2, val_2]:val){
+            fout<<" ,"+key_2+","+val_2+"\n";
+        }
+    }
+    fout<<"\n";
+
+    fout.flush();
+    fout.close();
+
 }
 
 

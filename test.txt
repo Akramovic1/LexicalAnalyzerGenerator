@@ -1,4 +1,4 @@
-E = T E_dash
+E = E T E_dash | 'c'
 E_dash = '+' T E_dash | Epsilon
 T = F T_dash
 T_dash = '*' F T_dash | Epsilon

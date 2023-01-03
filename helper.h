@@ -2,6 +2,7 @@
 #ifndef PHASE_1__HELPER_H
 #define PHASE_1__HELPER_H
 static int id_generator=0;
+static string output_path=R"(C:\Users\mrrad\OneDrive\Documents\GitHub\LexicalAnalyzerGenerator\results.csv)";
 static string remove_spaces(string input){
     input.erase(remove(input.begin(), input.end(), ' '), input.end());
     return input;
