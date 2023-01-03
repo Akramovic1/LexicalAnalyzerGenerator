@@ -2,4 +2,4 @@ E = T E_dash | F
 E_dash = '+' T E_dash | Epsilon
 T = F T_dash
 T_dash = '*' F T_dash | Epsilon
-F = '(' E ')' | 'id'
+F = '(' E ')' | 'id' F | Epsilon

@@ -285,7 +285,7 @@ void parser_generator::get_follow_for_one_key(string str,map<string,vector<strin
 }
 
 void parser_generator::LL1_parseFinal() {
-    vector<string> input_tokens = {"(", "id", ")", "$"};
+    vector<string> input_tokens = {"id", "id", "id", "$"};
     stack<string> s = stack<string>();
     s.push("$");
     s.push(grammer_rules[0].first);
@@ -320,7 +320,6 @@ vector<string> parser_generator::LL1_parse(string input, stack<string>& s) {
                 }else{
                     result.push_back("Error: missing "+ top + ", inserted");
                     s.pop();
-                    flag = false;
                 }
             }else{
                 result.push_back("Rejected");
@@ -338,12 +337,10 @@ vector<string> parser_generator::LL1_parse(string input, stack<string>& s) {
             if(production=="Sync"){
                 result.push_back("Error");
                 s.pop();
-                flag = false;
             }
             else if(production=="Epsilon"){
                 result.push_back(top+"->"+production);
                 s.pop();
-                flag = false;
             }else{
                 s.pop();
                 vector<string> prod_parts = split_on_spacial_chars(production,regex(R"([\s]+)"));
