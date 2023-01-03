@@ -201,8 +201,9 @@ void parser_generator::create_table(){
 
 void parser_generator::get_follow_sets(){
     map<string,vector<string>> graph = get_graph();
-    follow_sets[grammer_rules[0].first].insert("$");
+//    follow_sets[grammer_rules[0].first].insert("$");
     vector<string> order = topological_sort(graph);
+    follow_sets[order[0]].insert("$");
     for(string str:order){
         get_follow_for_one_key(str,graph);
     }
