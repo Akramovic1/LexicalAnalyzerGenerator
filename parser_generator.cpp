@@ -189,6 +189,8 @@ void parser_generator::get_follow_sets(){
 }
 
 void parser_generator::create_table(){
+    cout<<"\nCreate Parsing Table:"<<endl;
+    cout<<"_____________________\n"<<endl;
     for(auto const&[key, val]: rules_map) {
         for(string production:val){
             if (production.find("|") != string::npos)continue;
@@ -206,8 +208,12 @@ void parser_generator::create_table(){
         }
         bool eps=has_epsilon(rules_map[key]);
             for(string follow:follow_sets[key]){
-                if(table[key].count(follow)!=0)cout<<"Not LL(1)"<<endl;
-                table[key][follow]=eps?"Epsilon":"Sync";
+                if(table[key].count(follow)!=0) {
+                    string neglectedProd = eps ? "Epsilon" : "Sync";
+                    cout << "Not LL(1) : Non-terminal("+key+") under input ("+follow+") has production ("+ table[key][follow] +") Then neglect the coming production ("+neglectedProd+")"<< endl;
+                }else{
+                    table[key][follow] = eps ? "Epsilon" : "Sync";
+                }
             }
     }
 
