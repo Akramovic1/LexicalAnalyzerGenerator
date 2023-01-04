@@ -413,7 +413,7 @@ vector<string> parser_generator::LL1_parse(string input, stack<string>& s) {
             }
             string production=table[top][terminal];
             if(production=="Sync"){
-                result.push_back("Error Panic Mode Sync");
+                result.push_back("Error");
                 s.pop();
             }
             else if(production=="Epsilon"){

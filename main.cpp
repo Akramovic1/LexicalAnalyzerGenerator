@@ -26,6 +26,13 @@ int main(){
         cout<<pair.first<<":"<<pair.second<<endl;
     }
 
+//    for(auto it = pg.table.cbegin(); it != pg.table.cend(); ++it){
+//        std::cout << it->first << " " << ">>>>>> ";
+//        for (auto it2 = it->second.cbegin(); it2 != it->second.cend(); ++it2){
+//            std::cout << it2->first << " " << it2->second;
+//        }
+//        std::cout << "\n";
+//    }
 
 
 }

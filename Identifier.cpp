@@ -30,12 +30,6 @@ int Identifier::parsing_single_token(string input,parser_generator * pg, stack<s
     string accu;
     NFA *totalNFA = NFA_Generator::total_NFA;
     vector<State *> current_states = epsilonClosure(totalNFA->start_state);
-
-    //temp stack used for the LL1
-//    stack<string> tempStack = stack<string>();
-//    tempStack.push("$");
-//    tempStack.push(pg->grammer_rules[0].first);
-
     for (int i = 0; i < input.size(); i++) {
         accu+=input[i];
         if (current_states.empty())break;
@@ -67,12 +61,6 @@ int Identifier::parsing_single_token(string input,parser_generator * pg, stack<s
         acceptedTokens.push_back(make_pair(to_string(input[0]), "Undefined"));
     }
 
-    //send "$" to the LL1 parse to say its the end
-//    vector<string> res = pg->LL1_parse("$", tempStack);
-//    for (string str:res) {
-//        cout << str << endl;
-//    }
-    
     return accepted_index;
 }
 vector<State*> Identifier::nextAndEpsilonClosures(vector<State*>current_states,char input){
