@@ -2,7 +2,7 @@
 #ifndef PHASE_1__HELPER_H
 #define PHASE_1__HELPER_H
 static int id_generator=0;
-static string output_path=R"(E:\CSED23\year_(4)four_1st term\Compilers\Project\phase_2\LexicalAnalyzerGenerator-lexicalAnalyzer-syncronization\result.csv)";
+static string output_path=R"(C:\Users\mrrad\OneDrive\Documents\GitHub\LexicalAnalyzerGenerator\result.csv)";
 static string remove_spaces(string input){
     input.erase(remove(input.begin(), input.end(), ' '), input.end());
     return input;
@@ -217,8 +217,9 @@ static string group_naming(string str){
     result+=parts[parts.size()-1];
     return result;
 }
-static string  remove_extra_spaces(string str)
+static string remove_extra_spaces(string str)
 {
+    str=str+" ";
     int n = str.length();
     int i = 0, j = -1;
     bool spaceFound = false;

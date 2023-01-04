@@ -38,7 +38,7 @@ void parser_generator::removeLR() {
 void  parser_generator::eliminate_immediate_LR(int rule_index){
     pair<string,string> rule=grammer_rules[rule_index];
     vector<string> productions = split_on_spacial_chars(rule.second, regex(R"([\|])"));
-    pair<string,string>dash= make_pair(rule.first+"_dash","");
+    pair<string,string>dash= make_pair(rule.first+"_dashLR","");
     string temp;
      for(int i=0;i<productions.size();i++){
          if(productions[i].find("|") != string::npos)continue;
@@ -88,7 +88,7 @@ void parser_generator::left_factor() {
         sort(productions.begin(), productions.end());
         map <string, vector<string>> groups;
         int group_index = -1;
-        string group = productions[0];
+        string group = remove_extra_spaces(productions[0]);
         int current = -1;
         string refactored;
         for (string p: productions) {
@@ -122,8 +122,8 @@ void parser_generator::left_factor() {
                 clean_key.erase(remove(clean_key.begin(), clean_key.end(), '\''),clean_key.end());
             }
             clean_key= group_naming(clean_key);
-            refactored.append(key + " " + clean_key + "_dash " + "|");
-            grammer_rules.push_back({clean_key + "_dash", accumlator(val, "|")});
+            refactored.append(key + " " + clean_key + "_dashLF " + "|");
+            grammer_rules.push_back({clean_key + "_dashLF", accumlator(val, "|")});
         }
         grammer_rules[index].second = refactored.substr(0, refactored.size() - 1);
     }
@@ -148,7 +148,7 @@ vector<string> parser_generator::remove_substr(vector<string>vec,string str){
     vector<string>result;
     for(int i=0;i<vec.size();i++){
         result.emplace_back(vec[i].substr(str.size(),vec[i].size()));
-        if(result[i]==""){
+        if(remove_extra_spaces(result[i])==""){
             result[i]="Epsilon";
         }
     }
