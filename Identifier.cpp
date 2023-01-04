@@ -8,15 +8,22 @@ void Identifier::parse_string(string filepath,parser_generator* pg){
     ifstream inFile;
     inFile.open(filepath);
     string input_line;
+    stack<string> tempStack = stack<string>();
+    tempStack.push("$");
+    tempStack.push(pg->grammer_rules[0].first);
     while(getline(inFile, input_line)) {
         while(!input_line.empty()){
-            int index=parsing_single_token(input_line,pg);
+            int index=parsing_single_token(input_line,pg, tempStack);
             input_line=index==-1?input_line.substr(1,input_line.size()):input_line.substr(index+1,input_line.size());
         }
     }
+    vector<string> res = pg->LL1_parse("$", tempStack);
+    for (string str:res) {
+        cout << str << endl;
+    }
 }
 
-int Identifier::parsing_single_token(string input,parser_generator * pg) {
+int Identifier::parsing_single_token(string input,parser_generator * pg, stack<string> &tempStack) {
     int accepted_index = -1;
     string accepted_token;
     string acceptedString;
@@ -25,9 +32,9 @@ int Identifier::parsing_single_token(string input,parser_generator * pg) {
     vector<State *> current_states = epsilonClosure(totalNFA->start_state);
 
     //temp stack used for the LL1
-    stack<string> tempStack = stack<string>();
-    tempStack.push("$");
-    tempStack.push(pg->grammer_rules[0].first);
+//    stack<string> tempStack = stack<string>();
+//    tempStack.push("$");
+//    tempStack.push(pg->grammer_rules[0].first);
 
     for (int i = 0; i < input.size(); i++) {
         accu+=input[i];
@@ -61,10 +68,10 @@ int Identifier::parsing_single_token(string input,parser_generator * pg) {
     }
 
     //send "$" to the LL1 parse to say its the end
-    vector<string> res = pg->LL1_parse("$", tempStack);
-    for (string str:res) {
-        cout << str << endl;
-    }
+//    vector<string> res = pg->LL1_parse("$", tempStack);
+//    for (string str:res) {
+//        cout << str << endl;
+//    }
     
     return accepted_index;
 }

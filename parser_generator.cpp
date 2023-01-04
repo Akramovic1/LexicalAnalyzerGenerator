@@ -357,7 +357,7 @@ void parser_generator::write_table_results(){
 }
 
 void parser_generator::LL1_parseFinal() {
-    vector<string> input_tokens = {"(", "id" ,")", "$"};
+    vector<string> input_tokens = {"id", "+" ,"id", "$"};
     stack<string> s = stack<string>();
     s.push("$");
     s.push(grammer_rules[0].first);

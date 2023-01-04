@@ -9,18 +9,18 @@
 
 int main(){
     Parser p;
-    p.parseFile(R"(C:\Users\mrrad\OneDrive\Documents\GitHub\LexicalAnalyzerGenerator\grammar.txt)");
+    p.parseFile(R"(C:\Users\ahmed\Documents\GitHub\LexicalAnalyzerGenerator\grammar.txt)");
     NFA_Generator g;
     g.generate_all_NFAs(Parser::RE_expressions,p.raw_RE_definitions);
     Identifier i;
 
     parser_generator pg;
-    pg.read_file(R"(C:\Users\mrrad\OneDrive\Documents\GitHub\LexicalAnalyzerGenerator\test.txt)");
+    pg.read_file(R"(C:\Users\ahmed\Documents\GitHub\LexicalAnalyzerGenerator\test.txt)");
     pg.removeLR();
     pg.left_factor();
     pg.get_parsing_table();
     cout<<"___________________________________________Left derivation_________________________________________"<<endl;
-    i.parse_string(R"(C:\Users\mrrad\OneDrive\Documents\GitHub\LexicalAnalyzerGenerator\input.txt)",&pg);
+    i.parse_string(R"(C:\Users\ahmed\Documents\GitHub\LexicalAnalyzerGenerator\input.txt)",&pg);
         for(pair<string,string> pair:i.acceptedTokens){
         cout<<pair.first<<":"<<pair.second<<endl;
     }
