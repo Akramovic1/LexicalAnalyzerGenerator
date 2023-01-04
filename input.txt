@@ -1,1 +1,1 @@
-x int y; * -;
+while (x<5){x=x+1;}
