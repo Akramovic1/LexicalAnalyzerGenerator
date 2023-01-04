@@ -196,11 +196,12 @@ void parser_generator::create_table(){
             vector<string> prod_parts = split_on_spacial_chars(production,regex(R"([\s]+)"));
             if(is_terminal(prod_parts[0])){
                 if(table[key].count(prod_parts[0])!=0)cout<<"Not LL(1)"<<endl;
-                table[key][prod_parts[0]]=production;
+                table[key][prod_parts[0]]=remove_extra_spaces(production);
             } else{
                 for(string terminal:first_sets[prod_parts[0]]){
                     if(table[key].count(terminal)!=0)cout<<"Not LL(1)"<<endl;
-                    table[key][terminal]=production;
+
+                    table[key][terminal]= remove_extra_spaces(production);
                 }
             }
         }
