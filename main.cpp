@@ -8,6 +8,7 @@
 #include "parser_generator.h"
 
 int main(){
+    output_path=R"(C:\Users\mrrad\OneDrive\Documents\GitHub\LexicalAnalyzerGenerator\result.csv)";
     Parser p;
     p.parseFile(R"(C:\Users\mrrad\OneDrive\Documents\GitHub\LexicalAnalyzerGenerator\grammar.txt)");
     NFA_Generator g;
