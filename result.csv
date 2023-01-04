@@ -1,0 +1,60 @@
+
+After eliminate Left Recursion:
+E, T E_dash
+E_dash,'+' T E_dash  | Epsilon
+T,F T_dash
+T_dash,'*' F T_dash    | Epsilon
+F,'(' E ')'     | 'id'
+
+
+After Left Factoring:
+E,T E_dash 
+E_dash,'+' T E_dash   |Epsilon 
+T,F T_dash 
+T_dash,'*' F T_dash     |Epsilon 
+F,'(' E ')'      |'id' 
+
+
+First_sets
+E,'(' 'id' 
+E_dash,'+' Epsilon 
+F,'(' 'id' 
+T,'(' 'id' 
+T_dash,'*' Epsilon 
+
+Follow_sets:
+E,$ ')' 
+E_dash,$ ')' 
+F,$ ')' '*' '+' 
+T,$ ')' '+' 
+T_dash,$ ')' '+' 
+
+Parsing table:
+E
+ ,$,Sync
+ ,'(',T E_dash
+ ,')',Sync
+ ,'id',T E_dash
+E_dash
+ ,$,Epsilon
+ ,')',Epsilon
+ ,'+','+' T E_dash
+F
+ ,$,Sync
+ ,'(','(' E ')'
+ ,')',Sync
+ ,'*',Sync
+ ,'+',Sync
+ ,'id','id'
+T
+ ,$,Sync
+ ,'(',F T_dash
+ ,')',Sync
+ ,'+',Sync
+ ,'id',F T_dash
+T_dash
+ ,$,Epsilon
+ ,')',Epsilon
+ ,'*','*' F T_dash
+ ,'+',Epsilon
+

@@ -296,6 +296,7 @@ CMakeFiles/Phase_1_.dir/Identifier.cpp.obj: \
  C:/PROGRA~1/JETBRA~1/CLION2~1.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/bits/unordered_set.h \
  C:/PROGRA~1/JETBRA~1/CLION2~1.3/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/shared_mutex \
  C:\Users\mrrad\OneDrive\Documents\GitHub\LexicalAnalyzerGenerator\State.h \
+ C:\Users\mrrad\OneDrive\Documents\GitHub\LexicalAnalyzerGenerator\parser_generator.h \
  C:\Users\mrrad\OneDrive\Documents\GitHub\LexicalAnalyzerGenerator\NFA.h \
  C:\Users\mrrad\OneDrive\Documents\GitHub\LexicalAnalyzerGenerator\NFA_Generator.h \
  C:\Users\mrrad\OneDrive\Documents\GitHub\LexicalAnalyzerGenerator\Parser.h

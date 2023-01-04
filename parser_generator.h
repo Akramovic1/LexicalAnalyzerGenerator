@@ -32,8 +32,8 @@ void print_grammer_rules();
 void write_grammer_rules(string title);
 void write_table_results();
 
-void parser_generator::LL1_parseFinal();
-vector<string> parser_generator::LL1_parse(string input, stack<string>& s);
+void LL1_parseFinal();
+vector<string> LL1_parse(string input, stack<string>& s);
 };
 
 #endif //PHASE_1__PARSER_GENERATOR_H

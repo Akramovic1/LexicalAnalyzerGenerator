@@ -49,6 +49,9 @@ int Identifier::parsing_single_token(string input,parser_generator * pg) {
     if (accepted_index > -1) {
         acceptedTokens.push_back(make_pair(acceptedString, accepted_token));
         //send this token to the LL1 parse
+        cout<<endl;
+        cout<<"## send "+accepted_token+"--->"<<endl;
+        cout<<endl;
         vector<string> res = pg->LL1_parse(accepted_token, tempStack);
         for (string str:res) {
             cout << str << endl;
