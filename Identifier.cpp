@@ -2,25 +2,33 @@
 #include "NFA.h"
 #include "NFA_Generator.h"
 #include "Parser.h"
-void Identifier::parse_string(string filepath){
+#include "parser_generator.h"
+
+void Identifier::parse_string(string filepath,parser_generator* pg){
     ifstream inFile;
     inFile.open(filepath);
     string input_line;
     while(getline(inFile, input_line)) {
         while(!input_line.empty()){
-            int index=parsing_single_token(input_line);
+            int index=parsing_single_token(input_line,pg);
             input_line=index==-1?input_line.substr(1,input_line.size()):input_line.substr(index+1,input_line.size());
         }
     }
-
 }
-int Identifier::parsing_single_token(string input) {
+
+int Identifier::parsing_single_token(string input,parser_generator * pg) {
     int accepted_index = -1;
     string accepted_token;
     string acceptedString;
     string accu;
     NFA *totalNFA = NFA_Generator::total_NFA;
     vector<State *> current_states = epsilonClosure(totalNFA->start_state);
+
+    //temp stack used for the LL1
+    stack<string> tempStack = stack<string>();
+    tempStack.push("$");
+    tempStack.push(pg->grammer_rules[0].first);
+
     for (int i = 0; i < input.size(); i++) {
         accu+=input[i];
         if (current_states.empty())break;
@@ -40,9 +48,21 @@ int Identifier::parsing_single_token(string input) {
     }
     if (accepted_index > -1) {
         acceptedTokens.push_back(make_pair(acceptedString, accepted_token));
+        //send this token to the LL1 parse
+        vector<string> res = pg->LL1_parse(accepted_token, tempStack);
+        for (string str:res) {
+            cout << str << endl;
+        }
     } else if(input[0]!=' '){
         acceptedTokens.push_back(make_pair(to_string(input[0]), "Undefined"));
     }
+
+    //send "$" to the LL1 parse to say its the end
+    vector<string> res = pg->LL1_parse("$", tempStack);
+    for (string str:res) {
+        cout << str << endl;
+    }
+    
     return accepted_index;
 }
 vector<State*> Identifier::nextAndEpsilonClosures(vector<State*>current_states,char input){

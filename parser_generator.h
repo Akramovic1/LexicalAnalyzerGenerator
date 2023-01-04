@@ -29,11 +29,11 @@ map<string,vector<string>> get_graph();
 void get_follow_for_one_key(string str,map<string,vector<string>> right_most);
 void create_table();
 void print_grammer_rules();
+void write_grammer_rules(string title);
+void write_table_results();
 
-    void write_grammer_rules(string title);
-
-    void write_table_results();
+void parser_generator::LL1_parseFinal();
+vector<string> parser_generator::LL1_parse(string input, stack<string>& s);
 };
-
 
 #endif //PHASE_1__PARSER_GENERATOR_H

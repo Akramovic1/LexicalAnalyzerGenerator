@@ -356,6 +356,75 @@ void parser_generator::write_table_results(){
 
 }
 
+void parser_generator::LL1_parseFinal() {
+    vector<string> input_tokens = {"(", ")", "$"};
+    stack<string> s = stack<string>();
+    s.push("$");
+    s.push(grammer_rules[0].first);
+    for (int i = 0; i < input_tokens.size(); i++){
+        vector<string> res = LL1_parse(input_tokens[i], s);
+        for (string str:res) {
+            cout << str << endl;
+        }
+    }
+}
+
+vector<string> parser_generator::LL1_parse(string input, stack<string>& s) {
+    vector<string> result;
+    bool flag = true;
+    while(flag){
+        string top=s.top();
+        if(top=="$"){
+            if(input == "$"){
+                result.push_back("Token Accepted");
+                return result;
+            }else{
+                result.push_back("Token Rejected");
+                return result;
+            }
+        }
+        if(is_terminal(top)){
+            if(top[0]=='\''){
+                if(top.substr(1, input.size())==input){
+                    s.pop();
+                    result.push_back("Matched "+top);
+                    flag = false;
+                }else{
+                    result.push_back("Error: missing "+ top + ", inserted");
+                    s.pop();
+                }
+            }else{
+                result.push_back("Rejected");
+                return result;
+            }
+        }else{
+            string terminal = "\'" + input + "\'";
+            if(terminal == "\'$\'") terminal="$";
+            if(table[top].count(terminal)==0){
+                result.push_back("Error:(illegal" + top + ")" +  " - " + "discarded " + terminal);
+                flag = false;
+                continue;
+            }
+            string production=table[top][terminal];
+            if(production=="Sync"){
+                result.push_back("Error Panic Mode Sync");
+                s.pop();
+            }
+            else if(production=="Epsilon"){
+                result.push_back(top+"->"+production);
+                s.pop();
+            }else{
+                s.pop();
+                vector<string> prod_parts = split_on_spacial_chars(production,regex(R"([\s]+)"));
+                result.push_back(top+"->"+production);
+                for(int j=prod_parts.size()-1;j>=0;j--){
+                    s.push(prod_parts[j]);
+                }
+            }
+        }
+    }
+    return result;
+}
 
 
 
